@@ -1,0 +1,51 @@
+
+Distribution and Installation Questions
+
+Jay Dubb, MGH-Martinos Center for Biomedical Imaging, jdubb@nmr.mgh.harvard.edu
+
+HOMER2_UI Developers
+
+David Boas, MGH-Martinos Center for Biomedical Imaging, dboas@nmr.mgh.harvard.edu
+Jay Dubb, MGH-Martinos Center for Biomedical Imaging, jdubb@nmr.mgh.harvard.edu
+Ted Huppert, the University of Pittsburgh (Huppert2009), huppertt@upmc.edu
+
+Contributors:
+
+Louis Gagnon of MIT and the MGH-Martinos Center for Biomedical Imaging contributed code for using 
+short separation measurements to regress physiological interference while simultaneously estimating 
+stimulus evoked hemodynamic responses (Gagnon2011, Gagnon2012). See hmrDeconvTB_3rd(), 
+hmrDeconvTB_SS3rd(), hmrDeconvTB_SS3rd_Highest().
+
+Rob Cooper while at the Martinos Center contributed to several functions related to correcting 
+motion artifacts. See hmrMotionCorrectSpline().
+
+Katherine Perdue of Dartmouth College contributed code for identifying motion artifacts based on a 
+standard deviation threshold to complement the amplitude threshold. See hmrMotionArtifact().
+
+Qianqian Fang of MGH-Martinos Center for Biomedical Imaging contributed matlab routines from his 
+toolboxes iso2mesh and ezmapper to AtlasViewerGUI. The iso2mesh routines are used to resample dense 
+meshes to sparser ones when converting from freesurfer to viewer file formats. The ezmapper library 
+routines are used to convert digitized points acquired with ezmapper tool to the text format which 
+AtlasViewer can read.
+
+Juliette Selb of the Martinos Center contributed to several functions related to correcting motion 
+artifacts. See hmrMotionCorrectSpline().
+
+Sabrina Brigadoi, while visiting from University of Padova, contributed to functions related to 
+correcting motion artifacts. She adopted the wavelet method described by (Molavi2012) for Homer2. 
+See hmrMotionCorrect_Wavelet(). She also contributed hmrMotionCorrect_Cbsi() as adapted from (Cui2010).
+
+Chris Aasted contributed a tool for AtlasViewerGUI that will plot the variability of probe placement 
+across a group of subjects. Assuming you have a group of subjects for which you digitized the optode 
+coordinates, this is useful to ascertain if the placement was uniform across subjects.
+
+Jichi Medical University
+
+Daisuke Tsuzuki and Ippeita (Pepe) Dan (Functional Brain Science Lab) are helping to incorporate their 
+registration tools into Homer2 (Tsuzuki2012). These tools will be part of the AtlasViewerGUI tool.
+
+University Hospital Zurich
+
+Felix Scholkmann and Martin Wolf of the University Hospital of Zurich contributed a motion correction 
+algorithm using splines, as described in (Scholkmann2010). See hmrMotionCorrectionSpline().
+

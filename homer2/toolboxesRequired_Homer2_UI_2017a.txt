@@ -1,0 +1,6 @@
+Signal Processing Toolbox
+Symbolic Math Toolbox
+Image Processing Toolbox
+Statistics and Machine Learning Toolbox
+Wavelet Toolbox
+Curve Fitting Toolbox

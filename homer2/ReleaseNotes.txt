@@ -1,0 +1,376 @@
+==================
+Release Notes v2.8
+==================
+
+Homer2_UI: 
+----------
+
+-- Fixed time course not filling up entire length of x-axis. Made a mistake last time I did this because I broke setting fixed x-range. This time I am putting the setting in the auto xlim section.
+
+-- Another fix to EasyNIRS_ProcessOpt.m when there are too many functions in the proc stream EasyNIRS_ProcessOpt GUI cuts off function names. 
+
+-- Another fix to checkNIRSFormat when .nirs files missing t,d,or SD they should not be considered valid data files and should be skipped.
+
+-- Added on/off switch for enabling/disabling the following user function in a processing stream : 
+
+     hmrMotionCorrectSG.m
+     hmrMotionCorrectRLOESS.m
+     hmrMotionCorrectSpline.m
+     hmrMotionCorrectPCArecurse_Ch_dual.m
+     hmrMotionCorrectPCArecurseCh_SG.m
+     hmrMotionCorrectWavelet.m
+     hmrMotionCorrectPCArecurse.m 
+     hmrMotionCorrectCbsi.m
+     hmrMotionCorrectSplineSG.m    
+
+-- Added fixed time ranges options for X and Y axes in HOMER2 GUI.
+
+-- Homer2_UI GUI and procStreamGUI both go off screen at the bottom and are too big for some screens. Made units normalized and so that size is relative to screen size and location to fit completely on the screen. 
+
+-- Added function resetGroupFolder.m (can only be used if running Homer2_UI from Matlab) to reset subject folder nirs files back to original state.
+
+-- Modified hmrFlowInput.m
+
+-- Got rid of popup warning that db2.mat doesn't exist. Instead just print in Command window and save generated db2.mat, without prompting user to click OK button. 
+
+-- Changed the default iqr to 1.5 in hmrMotionCorrectWavelet.m.
+
+-- Change plot line styles for HbR and HbT displays to be dashed (--) and dotted (.-) lines respectively to distinguish from HbO displays. Same for wavelengths 2nd (or 3rd) wavelengths when viewing raw data or OD.
+
+-- Correct for nan values in intensity(n) in hmrFlowInput.m
+
+
+AtlasViewerGUI: 
+---------------
+
+-- Added of Standard Views which has buttons to view any head anatomy Left/Right, Anterior/Posterior, and Superior/Inferior sides. You can also use two angles, azimuth + elevation to specify precise views of any head. 
+
+-- Added tool ImportMriAnatomy to be able to import into AtlasViewer any subject-specific MRI anatomy in NIFTI and MGH formats. 
+
+-- Change what is displayed at startup when digitized points are present in the subject folder: previously only thew digitized points were displayed.  Now all the anatomical pieces that are available in the subject folder - head, brain, etc - are displayed. 
+
+-- Added menu option Reset Viewer State to be able to start workflow from scratch. 
+
+-- Added support for loading high-resolution fluence files. 
+
+-- Improved EEG reference points calculation tool: 
+a) Consolidated reference points menu items Find, Show, Configure, Calculate under one menu item: "Reference Points" under Tools menu.
+b) Calculate ALL 10-5 eeg reference points to allow selection of 10-20, 10-10 or 10-5 without having to recalculate them every time you select them. Improve progress bar display when calculating eeg points to meaningfully show progress in one bar. 
+c) Recalculated default 10-5 reference points for Colin atlas based on new definition of the ear landmarks, using the preauricular points LPA and RPA, rather than tragus which is what the previous ref points were based on. 
+d) But added a configuration tool menu item, allowing user to specify the anatomical location of RPA and LPA before recalculating 10-20, 10-10, 10-5. This is to allow for some ambiguity in the standard definition of the ear points in the literature.
+
+-- Improvements to Find Ref Points tool: 
+a) Show in the selection buttons which reference points have been selected and which haven't; 
+b) Datacursor position display is now in a separate window to the side; 
+c) The Save and Rotate Zoom panel is now in a separate panel. 
+d) Centered head display so it's not so close to the panels and isn't obscured by the panels. 
+e) Fix issue which causes the display to suddenly zoom make the head become huge when user clicks the figure's pan button (i.e., the small button in the figure toolbar with the up-pointing hand icon). 
+f) Fixed bug in the Find Ref Points GUI where re-selecting a reference point position, instead of repositioning the reference point under and keeping the same label, it would assign it a different label. 
+g) Handle situation when user selects a ref point with one of the ref points buttons but has not selected head location with the data cursor. 
+h) Removed TIP about orientation from Find Ref Points tool which forces user to read a lot of text, and stop to click OK and is non-visual. Instead added labeling of sides as L and R according which side of the head is the actual left and right. 
+
+-- Fix matlab error when trying to plot image recon without first generating it. 
+
+-- Fix when starting AV from a saved state (ie. when atlasViewer.mat is present in the subj folder), incorrectly setting Forward Model menu options. Even though probe is registered to head, and Adot sensitivity is available we don't enable all the downstream options like Load/Generate sensitivity. 
+
+-- In ImageRecon GUI get the appropriate subject name rather than naming everything 'New Folder'
+
+-- Should not be generating additional simulated wavelengths for DRM protected fluence files in setpaths - atleast not by overwriting the files. 
+
+-- Fix typo in bug fix when updating the number of wavelengths fwmodel.nWavelength when loading fluence profiles. Xinge uncovered this bug.
+
+-- Added feature to allow other atlases to be installed by user as the set of atlases offered by AtlasViewer when using Change Atlas menu item. 
+
+-- Eliminated the need for user to have to find and rename atlasViewer_SDdesign.mat in Probe Placement Variation.
+
+-- Fixed bugs related to loading groupResults (generated by Homer2_IU) in AtlasViewerGUI for image reconstruction and HbConc. 
+
+-- A Homer-users list member posted that he could not get AV to generate sensitivity matrix by following the YouTube video that shows how to do this. The reason for the problem of not being able to generate sensitivity was that the digitized probe in the digpts.txt file didn't match the probe in any of the .nirs file in his subject folder and therefore the measurement list could not be imported. To generate the sensitivity profile AV has to import the measurement list from one of the .nirs files in the subject folder. It will not do it if it detects an incompatibility. Added warnings and error messages alerting user when the measurement list is missing and therefore the ensitivity profile cannot be generated.
+
+-- Fix for probe with 'cm' units appearing incorrect because AtlasViewer was not using the Spatial Unit parameter in the SD geometry . 
+
+-- Fix for matlab error when clicking the Image Recon button in the ImageRecon GUI because Matlasb's eigs function in hmrImageReconConc.m doesn't work for single-precision floats only double. The sensitivity profile in some cases is single precision.
+
+-- Regenerated fluence profile with 1e7 instead of 1e6 photons.
+
+-- Change when some Forward Model menu options are enabled based on availability of Monte Carlo output and sensitivity profile. 
+
+-- Fix artifacts appearing in head surface because when generating surface from head we were keeping segmentation layers instead of making the whole head one value which would have been the correct way. 
+
+-- Fix matlab error when retrieving digitized points because isalpha_num is undefined in matlab versions later than R2016a. 
+
+-- Allow probe registration and other functions (for example when clicking pushbutton Register Probe To Surface) even when ONLY the head surface but not the head volume or brain surface are part of the AtlasViewer imported anatomy. Previously AtlasViewer expected head volume, brain surface and head surface to be present for it to be able to do anything like probe registration. 
+
+-- Improve noise reduction code for head volume when importing subject-specific anatomy. Old method didn't work well esp. for SPM output. Added adaptive thresholding where AtlasViewer tries to figure out automatically the threshold below which pixel values are considered noisy in an MRI image.
+
+-- Fix Register-to-Head-Size menu tool matlab error. 
+
+-- Added feature to calculate and display head dimensions; circumference, and length of sagittal and coronal curves. 
+
+-- Search for anchor points in reference point labels using incomplete string comparison when registering spring probe. It incorrectly assumed reference point labels are always lowercase.
+
+-- Fix matlab error when registering SD probe with springs after having registered the atlas to dig points. Found by Xinge who tried to compare designed flat probe with the digitized probe.
+
+-- Check the consistency of the main pieces of the loaded anatomy; make sure they all come from one source and is not a patchwork from atlas and subject folders. 
+
+-- Added ability to build Monte Carlo executable on-the-fly if it doesn't exist. 
+
+-- Fix AtlasViewer not recognizing that an Monte Carlo executable has been found and still asks user to locate it. Happens when the MC executable has been  been built on-the-fly when starting AtlasViewer. Encountered this bug on Linux.
+
+-- Fix executable permissions problem when running Monte Carlo on a MAC.
+
+-- Fix for Matlab error when importing subject specific anatomy on a MAC 
+   dyld: library not loaded /opt/local/lib/libstdc++.6.dylib
+Not all MACS produce this error. It happens when resampling the volume (using meshresample). 
+
+-- Added popup message asking user wants to select reference points and calculate EEG points at the end of importing MRI anatomy.
+
+
+-- Fix for bug seen in fNIRS course 2017 in image reconstruction which complains that 2 wavelengths are needed, because the precalculated fluence files with one wavelengths were loaded. This bug only occurred in the homer2 source release but not in the exe installations. Fix is to simply enable simulating a second wavelength in setpaths.m. 
+
+-- Fixed View Origin feature which wasn't working. It was giving a Matlab error instead. 
+
+-- Fix bug where after 1) registering atlas to dig points, 2) clicking "Register Probe to Surface", 3) running Monte Carlo 4) generating sensitivity, then 5) restarting AtlasViwer, and then repeating steps 1) and 2) AtlasViewer gets stuck trying to register probe to surface. (This is because the center of the transformed volume was not calculated correctly.)
+
+-- Fixed Matlab error when loading group mean digitized points. 
+
+-- Fixed small bug in zoom where every time you restart AtlasViewer or find new ref pts it zooms in closer in the main GUI.  
+
+-- Fix initial zoom of head surface when redisplaying axes (for instance after selecting basic reference points and calculating 10-20 reference points.)  
+
+-- Added the probe editing tool developed by Ardalan Aarabi - Université de Picardie Jules Verne. The tool allows changing the location of an existing optode on head (either digitized or original design).
+
+
+SDgui:
+------
+
+-- Added ability to delete multiple optodes and associated channels by dragging mouse over optodes in the SD axes display. Previously you could only delete optodes one at a time and only from the table of optode positions. 
+
+-- Added checkbox to view full path of the loaded SD file. 
+
+-- Made GUI fonts for MAC and Linux bigger. Matlab fonts are smaller on MAC and Linux than Windows.
+
+-- Clean up of SDgui:
+      * Resize and reposition GUI. 
+      * Make all table labels more visible. 
+      * Show axes X and Y axis labels more clearly using the latest matlab version method. 
+      * Reposition text box for error messages and file load/save messages to make them more visible. 
+
+-- Fix matlab error when saving SD file with number of springs is shorter than 3. 
+
+
+General:
+--------
+-- Changes to setpaths to remove any paths from other Homer2 workspaces that conflict with the currently active Homer2. This change not relevant to Homer executables, only when running from Matlab.
+
+-- Fix broken installation process for MAC
+
+-- Fixed sizing and positioning issues for Homer2_UI and AtlasViewerGUI GUIs so that it looks reasonable on any screen or monitor. 
+
+
+
+==================
+Release Notes v2.3
+==================
+
+Homer2_UI: 
+----------
+
+Added code to allow non-integer downsampling factor in hmrNirsFileDownsample
+
+Added Test folder for simple testing of Homer2_UI functionality. 
+
+Fixed FrameSize in Savitzky Golay smoothing.
+
+Fix for matlab error when starting stimGUI reported by Nadege. Problem was that auxChannels was present in the nirs file but was empty. The length of auxChannels should be equal to the number of columns in aux. Added error check and a repair for auxChannel if it is incorrect format. 
+
+Added hmrMotionCorrectSG.m, performing Savitzky-Golay smoothing
+
+Added hmrMotionCorrectRLOESS, performign RLOESS smoothing
+
+Added hmrMotionCorrectSplineSG which first finds baseline shifts only and then corrects them with spline interpolation and then corrects the spike type motions with Savitzky-Golay smoothing.
+
+Added hmrMotionCorrectPCArecurseCh_SG.m which first finds baseline shifts only and then corrects them with tPCA and then corrects the spike type motions with Savitzky-Golay smoothing.
+
+Added hmrMotionCorrectPCArecurse_Ch_dual.m This function performs tPCA and splice the segments of data together in two different ways (either using one tInc for all channels or using tIncCh), compares the results and picks the good one for a specific channel.
+
+Added hmrtInc_baselineshift_Ch.m which finds the baseline shift type of motions only. This code is for hybrid tPCA-SG and tPCA-Spline codes.
+
+
+AtlasViewerGUI: 
+---------------
+
+Added Test folder for simple testing of AtlasViewer functionality. 
+
+
+SDgui:
+------
+
+Added ability to select optodes by dragging mouse over the desired optodes in the SD geometry axes. Selected optodes and any channels connecting 
+them can then be deleted. If exactly one source and one detector are selected, then a channel can be created or deleted between them.
+
+Fixed bug which occassionally prevented the user from selecting any optodes. 
+
+
+General:
+--------
+
+If matlab version is older, prior to R2014a, then let user know that toolboxes cannot be identified and checked.
+
+List of required toolboxes changed in R2015a. Added required toolbox list file for releases after 2014b and code to check the matlab version to find the appropriate toolbox list file. If no file is found then it asks if user wants to generate the new toolbox list file. If not then it displays a message that it is unable to find the approriate toolbox list file.
+
+Revised installation instructions in the REAdME.txt file and corrected wrong information with feedback from Borja Blanco (b.blanco@bcbl.eu), Ryota Nishiyori (ryota.nishiyori@nih.gov). 
+
+Fixed checkToolboxes_AtlasViewer.m and checkToolboxes_Homer2.m to find ALL required toolboxes. Previous list is incomplete. Generated files toolboxesRequired_AtlasViewerGUI.txt and toolboxesRequired_Homer2_UI.txt because it takes a long time to search for toolboxes. 
+
+
+
+
+==================
+Release Notes v2.2
+==================
+
+
+Homer2_UI: 
+----------
+
+Change HbX line style in data axes display so that HbO, HbR, HbT are constant line styles. HbO is solid. HbR is dashed. HbT is dotted
+
+Changed channel colors of the first few time course data from red, blue and green to orange, green and magenta to avoid confusion with oxy and deoxy HB. 
+
+Fixed bug where time course colors for multiple channels in the data display don't match the channel colors in the SDG axes display. 
+
+Added function and menu option to a) downsample a nirs file and b) create a new nirs file from existing one which only has a specified segment of the original data.
+
+Alert user if there's error when calculating HRF by displaying message box with the error and name of function which failed. 
+
+Fix bug when loading and fixing SD.SpatialUnits, bad channel info in SD.MeasListAct of the 2nd ... Nth .nirs file is overwritten by the first .nirs file's SD.MeasListAct. Katherine Perdue submitted this issue. 
+
+Processing Options GUI window being too long and going beyond screen boundaries in a small screen. 
+
+Fixed issue when starting Homer2_UI and an error is encountered in loaded .nirs files, the error message box display goes off screen on small laptop screens.
+
+Made procStreamGUI.fig resizaeble, and increased font size becasuse really hard to read on smaller screens. 
+
+Fix for db2.mat file not found in Homer2_UI.exe when performaing motion correction with hmrMotionCorrectWavelet.m. This is only a problem in the standalone executable and on Linux. 
+
+Added wavelet motion correction function hmrMotionCorrectKurtosisWavelet.m and supporting function written by Antonio Maria Chiarelli. 
+
+Enabled stimGUI and procStreamGUI resizing. 
+
+
+
+AtlasViewerGUI: 
+---------------
+
+Updated iso2mesh with the latest code from http://iso2mesh.sourceforge.net/cgi-bin/index.cgi. Iso2mesh is used in AtlasViewer to convert Freesurfer processed MRI files to AtlasViewer format. Previously it only worked on Windows. The update and fixes makes it work on MAC and Linux.
+
+Fix error generating Monte Carlio output when the file path to the input, output or Monte Carlo excutable has spaces in it as can happen on Windows. 
+
+For Matlab versions 2014b, 2015a, and 2015b, display warning when using Find Refpts menu option. This option lets the user pick the Cz, Iz, LPA, RPA, and Cz head reference points from which 10-20 points can be calculated. The warning states that there is a bug in Matlab versaions 2014b, 2015a, and 2015b in the graghics which causes the datacursor to attach to vertices on the the hidden side of the head instead of the selected vertex on the visible side. This issue was fixed in R2016a (9.0). Also this issue doesn''t exist in versions prior to R2014b (8.4), for example R2013b. 
+
+If digitized points files are detected in subject's sub folders (rather then it's own subject folder) then give user a choice to load them or not. This is relevant to group imaging with several subjects all with the same probe digitized.
+
+When overlaying HbConc group average, import probe that is the mean of digitized points of the group subjects instead of design probe. 
+
+Increased the size of the ref point markers on the head in Find Ref Points.
+
+Fix loading of fluence files errors after saving atlas viewer state of registered probe then restarting atlasviewer and reloading fluence files got error that voxPerVoxel field nonexistent. 
+
+Fixed iso2mesh used to resample meshes in Freesurfer-to-Viewer conversions
+
+Fixed saveRefpts not saving correctly when using Find Ref Pts feature and changed functionality to allow overwriting atlas ref pts and displaying a warning. By contrast overwriting ref pts in local subject dir doesn't produce warning, only a message informing user that old refpts will be moved to refpts*.old. The bug was due to an incorrect path in refpts telling you where the ref pts came from.
+
+Fix bug in probe placement variation to account for the fact that short separation detectors are thrown away. 
+
+Added ability to AtlasViewerGUI to overlay image of Hb Concentration on the cortex, using the .nirs files HRF data produced by Homer2.
+
+Changed menu options in AtlasViewerGUI, related to probe projection by consolidating channels and optodes projection to one menu option, 'Project Probe to Cortex'. The user then chooses if they want to project optodes or channels. 
+
+Add lower resolution one wavelength fluenceProf files to homer2. 
+
+Fix in AtlasViewerGUI to Freesurfer-to-Viewer conversion. 
+
+Display waitbar when saving viewer state because it takes about 10-20 seconds, to let the user know what's going on.
+
+Added code to AtlasViewerGUI to display the saved state of the Hb Image Reconstruction. It was being saved but not displayed when the GUI starts up.
+
+Added checkbox to probe placement displays to toggle between AtlasViewer and MNI coordinates. 
+
+Changed the color of the head and pial surfaces to be more pleasing to the eye.
+
+Reduced the shininess of the light on surfaces. 
+
+Changed the lighting to be spread evenly over the surfaces. 
+
+Fixed left-right side flipping problem in probe placement variation feature in AtlasViewerGUI. 
+
+Fix bug in orientation when converting Freesurfer files to AtlasViewer.
+
+Fix for matlab error when loading nirs files without tHRF. 
+
+Added user configuration of max/min tHRF range in HB Concentration overlay calculation.
+
+Fix matlab error in AtlasViewerGUI, when dummy optodes don't exist.
+
+Fix error in AtlasViewerGUI, Hb Image reconstruction, where HbO is always displayed when changing channels, even when HbR is selected. 
+
+Added ability to select channel in Hb Concentration display. 
+
+Changed color of cortex in Image Display objects. 
+
+Greatly simplified image display panel in AtlasViewerGUI where sensititivity and image reconstruction are displayed. 
+
+When importing probe, If probe is misaligned warn user about it and ask if they still want to try to project (register) probe to head.
+
+
+SDgui: 
+------
+
+Fix problem of inability to select optodes with the mouse in some instances like with a dense probe.
+
+Fix bug where user starts SDgui, cancels .SD file search in order to create new probe geometry, then enters coordinates of first optode which generates matlab error. 
+
+When saving file in SDgui, made .SD extension the default extension when user doesn't provide an extension. 
+
+
+Miscellanious:
+--------------
+This release's homer2_install*.zip installation package was built with Matlab R2016a (instead of R2014b used in previous release). Users of the stand alone executables have to download and install Matlab Compiler Runtime 2016a. 
+
+Created function checkToolboxes.m, and checkToolboxes_Homer2.m and checkToolboxes_AtlasViewer.m to check if the required toolboxes for these tools are installed and if not to warn the user about it, listing which toolboxes are missing. Added this check to setpaths and also added list of required toolboxes to README.txt. 
+
+Update setpath to check matlab compatibility if required toolboxes exist.
+
+Added setpaths.m for setting the Homer2 and AtlasViewer search paths in matlab, every time a new matlab session is started. 
+
+Added ability to remove the homer2 paths using the command setpath(0). 
+
+Created homer_install installation packages for Windows, MAC and Linux for installing and running Homer2 and AtlasViewer standalone executables. 
+
+
+
+==================
+Release Notes v2.1
+==================
+
+-- Made invisible the menu options to generate and load fluence profiles and to do image recon. 
+
+-- Modified Buildme script to build AtlasViewerGUI so that it builds successfully and loads very quickly the first and subsequent times. This might be a good solution for the incredible amount of time it took to build and 
+load AtlasViewerGUI in the NIRS class in 2013b. (At least in my testing it worked this way. Needs to be tested by others on other platfoms to confirm). 
+
+-- I built Homer2_UI.exe and AtlasViewerGUI.exe in 2014b but haven't released it yet. For the release I'm proposing the version 2.1.  
+
+-- Added AtlasViewerGUI version to saveObjects.m so that we know what version of the GUI was used to save the viewer state. 
+
+-- Fixed faulty error checking code in getProbe which loads and compares measurement list from SD file to digpts sources and detectors. Also rather than reject the whole SD.MeasList if the measlist references undigitized optodes, only throw away invalid channels and keep the rest of the measlist.
+
+-- There was an old problem where white dots appearing against head in AtlasViewer. The reason was that the display function plotted these points to indicate the bounding box of the display objects so the axes would resize automatically to include text graphics. In matlab text graphics are annotations which do not resize the axes making graphics like numbered optodes or digitizede points be totally or partially obscured by a undersized axes, especially if you rotate the axes with the digitized points. But I got rid of the white dots due to complaints about them in homer-users list by commenting out the code in viewPts which draws those dots, forgetting about the problem it was meant to solve. This change in viewPts fixes both the white dots problem and the digitized points being obscured problem by just changing the 'marker' property from '.' to 'none'.
+
+-- Meryem found bug. When saving viewer state of subjects separately and then adding those subjects to group the subject id remains = 1 even though it should have changed to it's new group subject id. It gets the wrong subject id from the saved viewer state. The solution is not to save some fields such as subj id. To fix added function ptr to each object, prepObjForSave, where each object defines it's own field that should be removed before saving object. 
+
+-- Finally found the correct way to determine orientation and display head objects so that left-right show up correctly based on the reference points and Freesurfer style 3 letter code from AP/SI/LR (Anterior-Posterior/Superior-Inferior/Left-Right). Cleaned out the code from incorrect old method using T_2ras. 
+
+-- Added backward compatibility with saved state objects from precious versions. This involved adding the function pointer to each object, checkCompatability(). 
+
+-- Made rotate axes buttons work the same as the way David did in brainscape - simple characters <, >, /\, and \/ rather than fancy special chracters created by the uibutton function which was removed. 

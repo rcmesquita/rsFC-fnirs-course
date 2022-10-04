@@ -1,0 +1,1400 @@
+.0.3
+
+
+Commit Note: "
+Added data directory to AtlasViewerGUI containing Colin27 atlas data. It is now loaded
+automatically when AtlasViewerGUI first opens.
+"
+Date: Sept 10, 2012
+Files Changed: 3
+AtlasViewerGUI.m, 1.6
+AtlasViewerGUI_version.m, 1.5
+EasyNIRS\EasyNIRS_version.m, 1.51
+
+Files Added: 10
+Data\aal_related.mat
+Data\map_mesh_idx_hr2lr.mat
+Data\map_mesh_idx_lr2hr.mat
+Data\refpts.txt
+Data\refpts_10_20.txt
+Data\refpts_10_20_label.txt
+Data\surf\lh.pial_resampled
+Data\surf\lhrh.head_resampled
+Data\surf\rh.pial_resampled
+Data\vox2ras.txt
+
+
+====================================
+v1.0.5
+
+Commit Note: "
+These changes are related to the adding of the default atlas data to
+AtlasViewerGUI. Problem was that the the volume hseg.bin was left out. 
+It is used when registering probe using positionprobe. So I added 
+gzip-compressed hseg.bin file (uncompressed it is 17MB) and a few lines of 
+code to uncompress it when registering probe. Also fixed some pathname bugs 
+related to this change which confuse the subject directory with the atlas 
+directory. When loading probe, it should be from the subject directory.
+"
+Date: Sept 12, 2012
+Files Changed: 3
+AtlasViewerGUI.m, 1.7
+AtlasViewerGUI_version.m, 1.6
+
+
+Files Added: 10
+Data/mri/hseg.bin.gz 
+Data/mri/hseg_dims.txt
+
+
+====================================
+v1.0.6
+
+Commit Note: "
+Fix for dirnameSubj field being deleted from atlasViewer.
+"
+Date: Sept 12, 2012
+Files Changed: 1
+AtlasViewerGUI.m, 1.8
+AtlasViewerGUI_version.m, 1.7
+
+
+====================================
+v1.0.7
+
+
+Commit Note: "
+-- Added subject directoriers: AtlasVirewerGUI assumes current directory 
+is current subject directory. It looks for mri files; head surface in 
+the current subject directory and displays it with the brain surface 
+and 10-20 points. If it doesn't find the head surface in the current 
+subject directory, it defaults to the atlas head surface which is part 
+
+of the HOMER2 project.
+
+
+
+-- Also changed the atlas viewer space to RAS. With this change 
+AtlasViewerGUI looks for a separate transformation matrix to RAS space
+for each surface it loads. If it doesn't find a transformation matrix 
+it assumes the surface is in RAS space already. Also here are the 
+standard file names AtlasViewerGUI looks for
+
+
+   cortex surface   : surf/lh.pial, surf/rh.pial
+   head surface     : surf/lhrh.head
+   head volume      : mri/hseg
+   reference points : refpts.txt
+   head surface to ras     : headsurf2ras.txt
+   cortex surface to ras   : pialsurf2ras.txt
+   reference points to ras : refpts2ras.txt
+   head volume to ras      : vox2ras.txt
+   anatomical labels       : aal2ras.txt
+
+
+-- Lastly modified the way the rotate buttons are redrawn when a new 
+directory is loaded. Before we used to redraw them by deleting their 
+handles and contrcting and dispolaying them all over again. This 
+proved to be very very slow. Now we don't delete the buttons if they 
+already exist. 
+
+
+"
+Date: Oct 9, 2012
+Files Changed: 5 
+AtlasViewerGUI.fig, 1.9
+AtlasViewerGUI.m, 1.10
+AtlasViewerGUI_version.m, 1.8
+ForwardModel/displayIntensityOnMesh.m,  1.3
+LoadSaveSurfsPts/loadFSSurface.m, 1.2
+Registration/probeSprings/registerProbe2Head.m, 1.3
+
+
+Files Added: 4
+Data/aal2ras.txt
+Data/headsurf2ras.txt
+Data/pialsurf2ras.txt
+Data/refpts2ras.txt
+
+
+====================================
+v1.0.8
+
+
+Commit Note: "
+Changed the name of the standard head surface file from lhrh.head
+to lhrh.head_resampled
+"
+Date: Oct 9, 2012
+Files Changed: 2
+AtlasViewerGUI.m, 1.11
+AtlasViewerGUI_version.m, 1.9
+
+
+
+====================================
+v1.0.9
+
+
+Commit Note: "
+Fixed a few bugs related to probe registration. These bugs were introduced with the 
+last 2 changes which defined what a subject directory is and when to use atlas mri
+files.
+"
+Date: Oct 12, 2012
+Files Changed: 5
+AtlasViewerGUI.fig, 1.10
+AtlasViewerGUI.m, 1.11
+AtlasViewerGUI_version.m, 1.9
+Registration\probeSprings\registerProbe2Head.m,1.4
+Registration\probeSprings\write_positionprobe_dat.m, 1.2
+
+
+====================================
+v1.0.10
+
+Commit Note: "
+Second phase of image reconstruction: a) define digitized points text format and 
+parser (getDigpts). b) Added standalone converter from a specific digitized format 
+ezmapper to text. c) Added ability to register atlas to subject using digitized 
+points and to obtain optode coordinates. 
+"
+Date: Oct 12, 2012
+Files Changed: 6
+AtlasViewerGUI.fig, 1.11
+AtlasViewerGUI.m, 1.13
+AtlasViewerGUI_version.m, 1.11
+LoadSaveSurfsPts/viewPts.m, 1.3
+Registration/probeSprings/SDguiSpring2posProbe.m, 1.2
+Registration/probeSprings/registerProbe2Head.m, 1.5
+
+
+Files Added: 1
+Utils/ezmapper2txt.m
+
+
+=====================================
+v1.0.11
+
+
+Commit Note: "
+1) Spring registeration code broke with the last few changes. Fixed the 
+transformation of ref points from subject surface space to atlas volume 
+space and back when applying the positionprobe algorithm. This algorithm
+uses the original untransformed volume while the reference points were 
+transformed from atlas volume to surface RAS and then to subject's 
+digitized point space. This is why we need to transform them back to atlas 
+volume for positionprobe and then back. 2) Changes to allow viewing of 
+sources (in red) and detectors (in blue) on the head surface.
+"
+Date: Oct 12, 2012
+Files Changed: 6
+AtlasViewerGUI.fig, 1.12
+AtlasViewerGUI.m, 1.14
+AtlasViewerGUI_version.m, 1.12
+LoadSaveSurfsPts/loadFSSurface.m, 1.3
+Registration/probeSprings/SDguiSpring2posProbe.m, 1.3
+Registration/probeSprings/registerProbe2Head.m, 1.6
+
+
+
+======================================
+v1.1
+
+Commit Note: "
+Changes to generate monte carlo simulation output and 
+sensitivivity profile. Now if subject's digitized points 
+exist, they are displayed instead of the default atlas head. 
+The user then has to register atlas to subject space and 
+AtlasViewerGUI will display atlas surfaces in subject 
+digitized point space. If the probe is also digitized 
+then user doen't need to import probe only bring it to the 
+subject's surface by clicking the Register Probe button.  
+
+Consolidated the various ways of importing probe into 
+one menu option (used to have LoadProbe and ImportProbe) 
+and function. 
+
+Got rid of references to SDgui's global SD structure in 
+and the function AtlasViewerGUI_SDgui. It isn't needed. Now 
+SDgui communicates with AtlasViewerGUI by updating 
+atlasViewer.probe through the sd_data_Set* functions (and this 
+should be the only place this is done. 
+"
+Date: Oct 22, 2012
+Files Changed: 13
+AtlasViewerGUI.fig, 1.13
+AtlasViewerGUI.m, 1.15
+AtlasViewerGUI_version.m, 1.13
+Data/aal2ras.txt, 1.2
+ForwardModel/displayIntensityOnMesh.m, 1.4
+ForwardModel/genForwardMatrix_new.m, 1.2
+ForwardModel/get_tiss_prop.m, 1.2
+ForwardModel/projVoltoMesh.m, 1.2
+LoadSaveSurfsPts/viewPts.m, 1.4
+LoadSaveSurfsPts/viewPtsOnSurf.m, 1.3
+LoadSaveSurfsPts/viewsurf.m, 1.3
+LoadSaveSurfsPts/viewsurf2.m, 1.2
+Registration/probeSprings/registerProbe2Head.m, 1.7
+
+Files Renamed: 2
+ForwardModel/genMCinput.m -->
+   ForwardModel/gen_tMCimg_inp.m 
+Registration/probeSprings/SDguiSpring2posProbe.m -->
+   Registration/probeSprings/spring2posprobe.m 
+
+
+
+Files Added: 20
+Data/headvol2ras.txt 
+Data/mri/hseg_tiss_type.txt 
+LoadSaveSurfsPts/getDigpts.m 
+LoadSaveSurfsPts/getHeadSurf.m 
+LoadSaveSurfsPts/getHeadVol.m 
+LoadSaveSurfsPts/getLabelsSurf.m 
+LoadSaveSurfsPts/getPialSurf.m 
+LoadSaveSurfsPts/getRefpts.m 
+LoadSaveSurfsPts/initHeadSurf.m 
+LoadSaveSurfsPts/initLabelsSurf.m 
+LoadSaveSurfsPts/initPialSurf.m 
+LoadSaveSurfsPts/initRefpts.m 
+Utils/bring_pts_to_surf.m 
+Utils/img2mesh.m 
+Utils/isidentity.m 
+Utils/load_image.m 
+Utils/prepPtsStructForViewing.m 
+Utils/save_bin.m 
+Utils/xform_apply_vol_smooth.m 
+Data/headvol2ras.txt 
+
+Files Removed: 3
+AtlasViewerGUI_SDgui.m 
+ForwardModel/gen_tMCimg_inp_wrapper.m 
+AtlasViewerGUI_SDgui.m 
+
+
+==================================
+v1.1.1
+
+Commit Note: "
+1. Got rid of Update sensitivity button and instead sensitivity 
+updates automatically when edit channels sensitivity is changed
+to a different channel. 
+
+2. Name of Generate Sensitivity profile menu item changed to 
+Generate/Load Sensitivity profile. Also it is automatically 
+enabled when genForwardMatrix_new.mat is found after probe 
+registration
+
+3. Name of pushbutton Register Probe changed to Register Probe 
+to Surface.
+
+4. Fixed color problem with meas channels when updating sensitivity 
+and hiding and then showing measurement channels.
+
+5. Fixed noptorig not showing the correct number of optodes. noptorig 
+is the number of optodes without dummy points if they exist. If  
+spring registration isn't used it should just equal the total number 
+of optodes. 
+"
+Date: Oct 23, 2012
+Files Changed: 3
+AtlasViewerGUI.fig, 1.15
+ACKAGES/AtlasViewerGUI.m, 1.17
+AtlasViewerGUI_version.m, 1.14
+
+====================================
+v1.1.2
+
+Commit Notes:
+"
+
+-- Added display of imported probe using spring algorithm prior to regsitration. Previously 
+imported optodes for spring algorithm were invible until regsitration. Also got rid of 
+a few minor errors. 
+-- Fixed crash when SDgui is closed as well as minor fixes: lack of semi colon
+-- small fixes for Jay mesh.vertices
+-- Fixed error in aal labels vertices. We weren't getting correct projection of optodes to cortex
+-- Projecting optodes to cortex with no digitized points used to work then broke with last commit. 
+Fixed in this commit
+"
+Date: Oct 23, 2012
+Files Changed: 3
+AtlasViewerGUI.m, 1.22, 1.21, 1.20, 1.19, 1.18
+AtlasViewerGUI_version.m, 1.15
+getLabelsSurf.m, 1.2
+
+Files Added: 1
+existMCOutput.m
+
+
+=======================================
+v1.1.3
+Commit Notes:
+"
+Make imported probe visible before registering it. 
+"
+Date: Oct 24, 2012
+Files Changed: 1
+AtlasViewerGUI.m, 1.24, 1.23
+AtlasViewerGUI.fig, 1.16
+AtlasViewerGUI_version.m, 1.16
+
+
+=======================================
+v1.1.5
+
+Commit Notes:
+"
+Made forward model (MC and sensitivity profile) work for 
+non-digitized points case - that is generating MC input and 
+output and then viewing sensitivity profile for unregisterd 
+atlas. Also now checking if MC input and output exist and if
+they match current probe being viewed on the head. We enable 
+or disable Sensitvity profile menu item based on that.
+"
+Date: Nov 5, 2012
+Files Changed: 9
+AtlasViewerGUI.m, 1.25
+AtlasViewerGUI_version.m, 1.18
+ForwardModel/existMCOutput.m, 1.2
+ForwardModel/genMCinput.m, 1.2
+LoadSaveSurfsPts/getHeadVol.m, 1.2
+LoadSaveSurfsPts/viewPts.m, 1.5
+Registration/probeSprings/getRegSpringError.m, 1.3
+Utils/bring_pts_to_surf.m, 1.2
+Utils/prepPtsStructForViewing.m, 1.2
+
+Files Added: 2
+ForwardModel/read_tMCimg_inp.m
+Utils/getFileDateStruct.m
+
+=======================================
+v1.1.6
+
+Commit Notes:
+"
+Changes since 1.1.5
+"
+Date: Nov 25, 2012
+Files Changed: 6 
+AtlasViewerGUI.m, 1.27
+AtlasViewerGUI_version.m, 1.19
+LoadSaveSurfsPts/getHeadSurf.m,1.3
+LoadSaveSurfsPts/getLabelsSurf.m,1.4 
+LoadSaveSurfsPts/getPialSurf.m, 1.3 
+LoadSaveSurfsPts/getRefpts.m, 1.3
+
+Files Added: 2
+Utils/parseezs.m 
+Utils/remapoptodes.m 
+
+
+=======================================
+v1.1.7
+
+Commit Notes:
+"
+Revise rules and filenames for loading subject files. AtlasViewerGUI should 
+try to load all the files: digtized points and mri. If mri don't exist load 
+unregistered atlas mri files and then through a menu option give user 
+opportunity to register atlas mri files to registered points.
+"
+Date: Nov 25, 2012
+Files Changed: 28
+AtlasViewerGUI.fig, 1.17
+AtlasViewerGUI.m, 1.28
+AtlasViewerGUI_version.m, 1.19
+ForwardModel/displayIntensityOnMesh.m, 1.5
+ForwardModel/genForwardMatrix_new.m, 1.3
+ForwardModel/genMCinput.m, 1.3
+ForwardModel/get_tiss_prop.m, 1.3
+ForwardModel/projVoltoMesh.m, 1.3
+LoadSaveSurfsPts/getDigpts.m, 1.2
+LoadSaveSurfsPts/getHeadSurf.m, 1.4
+LoadSaveSurfsPts/getHeadVol.m, 1.3
+LoadSaveSurfsPts/getLabelsSurf.m, 1.5
+LoadSaveSurfsPts/getPialSurf.m, 1.4
+LoadSaveSurfsPts/getRefpts.m, 1.4
+LoadSaveSurfsPts/initHeadSurf.m, 1.2
+LoadSaveSurfsPts/initLabelsSurf.m, 1.2
+LoadSaveSurfsPts/initPialSurf.m, 1.2
+LoadSaveSurfsPts/initRefpts.m, 1.2
+LoadSaveSurfsPts/loadFSSurface.m, 1.4
+LoadSaveSurfsPts/viewPts.m, 1.6
+LoadSaveSurfsPts/viewPtsOnSurf.m, 1.4
+LoadSaveSurfsPts/viewsurf.m, 1.4
+LoadSaveSurfsPts/viewsurf2.m, 1.3
+Registration/probeSprings/gen_positionprobe_dat.m, 1.2
+Registration/probeSprings/gen_xform_from_pts.m, 1.2
+Registration/probeSprings/positionprobe.m, 1.2
+Registration/probeSprings/registerProbe2Head.m, 1.8
+Utils/xform_apply_vol_smooth.m, 1.2
+
+
+Files Added:  24
+Data/aal2cs.txt 
+Data/aal2vol.txt 
+Data/headsurf.mesh 
+Data/headsurf2cs.txt 
+Data/headsurf2vol.txt 
+Data/headvol.vox 
+Data/headvol2cs.txt 
+Data/headvol_dims.txt 
+Data/headvol_tiss_type.txt 
+Data/pialsurf.mesh 
+Data/pialsurf2cs.txt 
+Data/pialsurf2vol.txt 
+LoadSaveSurfsPts/displayDigpts.m 
+LoadSaveSurfsPts/displayHeadSurf.m 
+LoadSaveSurfsPts/displayLabelsSurf.m 
+LoadSaveSurfsPts/displayPialSurf.m 
+LoadSaveSurfsPts/displayRefpts.m 
+LoadSaveSurfsPts/initDigPts.m 
+LoadSaveSurfsPts/initHeadVol.m 
+Probe/initProbe.m 
+Probe/loadSD.m 
+Probe/probeReset.m 
+Probe/resetProbeGuiObjs.m 
+Utils/volcenter.m 
+
+
+Files Deleted: 10
+Data/aal2ras.txt
+Data/headsurf2ras.txt
+Data/map_mesh_idx_hr2lr.mat
+Data/map_mesh_idx_lr2hr.mat
+Data/pialsurf2ras.txt
+Data/refpts2ras.txt
+Data/refpts2vol.txt 
+Data/vox2ras.txt
+Registration/probeSprings/positionprobe_apply.m
+Utils/load_image.m
+
+
+Files Renamed: 2
+LoadSaveSurfsPts/load_bin.m
+        Utils/load_vox.m 
+Utils/save_bin.m
+        Utils/save_vox.m 
+
+
+=========================================================
+v1.1.8
+
+Commit Notes:
+"
+Add toggle option to alternate between 2 different optode 
+numberings: source/detector and single optode numbering that is more 
+condusive for probe registration.
+(task created, Nov 9, 2012)
+
+-- Lighting of axes surfaces (head, pial, etc) needs to be improved 
+because it illuminates only one side. It is hard to see any of the reference 
+points, optodes or digitized points on the one side of the head. 
+(task created, Nov 26, 2012)
+
+-- Organize atlasViewer fields so that handles for graphics 
+objects belong to structs for one of the objects: 
+        headvol, 
+        headsurf, 
+        pialsurf, 
+        refpts, 
+        probe, 
+        digpts, 
+        labelssurf
+        sensitivity
+(task created, Nov 23, 2012)
+This is an attempt to make AtlasViewerGUI more object oriented by 
+associating handles with one of the above objects. So far only probe 
+has been modified to contain it's own handles. The rest will follow 
+in subsequent commits.
+
+-- Cleanup and simplification of spring regsitration method. Made it use as 
+arguments only the above objects. Also got rid of writing of 
+positionprobe.dat file to disk. Instead just output posprobe_data matrix 
+which is used directly by positionprobe algorithm.
+
+-- Fixed anatomical labels bug and created a optode ray projection display 
+function which accounts for the orientation by accepting as an argument and 
+using the T_2ras transformation matrix.
+
+-- Removed function isnumber from PACKAGE/Utils, making all AtlasViewerGUI
+dependencies under AtlasViewerGUI.
+"
+Date: Nov 26, 2012
+Files Changed:  11
+AtlasViewerGUI.fig, 1.18
+AtlasViewerGUI.m, 1.29
+AtlasViewerGUI_version.m, 1.21
+ForwardModel/genMCinput.m, 1.4
+LoadSaveSurfsPts/displayDigpts.m, 1.2
+LoadSaveSurfsPts/getDigpts.m, 1.3
+LoadSaveSurfsPts/getHeadVol.m, 1.4
+Probe/initProbe.m, 1.2
+Registration/probeDigPoints/pullPtsToSurf.m, 1.3
+Registration/probeSprings/gen_positionprobe_dat.m, 1.3
+Registration/probeSprings/registerProbe2Head.m, 1.9
+
+Files Added: 3
+LoadSaveSurfsPts/resetLabelssurf.m
+Probe/setProbeDisplay.m
+Probe/setOptodeNumbering.m
+
+Files Renamed: 2
+Probe/probeReset.m
+   Probe/resetProbe.m
+Utils/volcenter.m
+   Utils/findcenter.m
+
+
+=========================================================
+v1.1.10
+
+Commit Notes:
+"
+When pulling optodes to head surface added option to use normals 
+to surface rather than center. This is the active option now.
+"
+Date: Nov 29, 2012
+Files Changed: 5
+AtlasViewerGUI.m, 1.31
+AtlasViewerGUI_version.m, 1.23
+Probe/initProbe.m, 1.3
+Probe/resetProbe.m, 1.2
+Utils/ezmapper2txt.m, 1.2
+
+
+Files Added: 13
+ezmapper/gethalfwaypt.m
+ezmapper/plotezsession.m
+ezmapper/plotezsessions.m
+ezmapper/regoptodes.m
+metch/COPYING
+metch/affinemap.m
+metch/dist2surf.m
+metch/getplanefrom3pt.m
+metch/linextriangle.m
+metch/nodesurfnorm.m
+metch/proj2mesh.m
+metch/regpt2surf.m
+metch/trisurfnorm.m
+
+Files Deleted: 1
+Utils/bring_pts_to_surf.m
+
+
+Files Renamed: 8
+LoadSaveSurfsPts/fread3.m
+   freesurfer/fread3.m
+LoadSaveSurfsPts/fwrite3.m
+   freesurfer/fwrite3.m
+LoadSaveSurfsPts/read_surf.m
+   freesurfer/read_surf.m
+LoadSaveSurfsPts/write_surf.m
+   freesurfer/write_surf.m
+Registration/probeDigPoints/pullPtsToSurf.m
+   Utils/pullPtsToSurf.m
+Utils/parseezs.m
+   ezmapper/parseezs.m
+Utils/raytrace.m
+   iso2mesh/raytrace.m
+Utils/remapoptodes.m
+   ezmapper/remapoptodes.m
+
+=====================================================
+v1.1.11
+
+Commit Notes:
+"
+-- Currently we are projecting optodes to cortex but we 
+should be projecting channels to cortex. 
+(task created, Nov 26, 2012)
+Implemented projection of measurement channels to cortex rather than
+optodes. 
+
+-- Moved labelssurf functions to their own directory.
+
+-- Fixed: optode ray projections to cortex (when meas list doesn't exist)
+creating rays for dummy optodes.
+"
+Date: Dec 3, 2012
+Files Changed: 6
+AtlasViewerGUI.m, 1.32
+AtlasViewerGUI_version.m, 1.24
+Probe/initProbe.m, 1.4
+Probe/resetProbe.m, 1.3
+Probe/resetProbeGuiObjs.m, 1.2
+Probe/setProbeDisplay.m, 1.2
+
+Files Renamed: 8
+LoadSaveSurfsPts/displayLabelsSurf.m
+Labelssurf/displayLabelsSurf.m
+LoadSaveSurfsPts/getLabelsSurf.m
+Labelssurf/getLabelsSurf.m
+LoadSaveSurfsPts/initLabelsSurf.m
+Labelssurf/initLabelsSurf.m
+LoadSaveSurfsPts/resetLabelssurf.m 
+Labelssurf/resetLabelssurf.m
+
+Files Deleted: 4
+Labelssurf/initLabelsSurfProbeProjection.m
+Probe/drawMeasChannels.m
+Probe/findMeasMidPts.m
+Probe/initProbeProjection.m
+
+
+======================================================
+v1.1.12
+
+Commit Notes:
+"
+Implmented projection of measurement channels to cortex rather than
+optodes but forgot to change the meaning of the coordinates of table 
+columns from opt # to src,det.
+"
+Date: Dec 3, 2012
+Files Changed: 1
+AtlasViewerGUI.m, 1.33
+AtlasViewerGUI_version.m, 1.25
+
+
+=======================================================
+v1.2
+
+
+Commit Notes:
+"
+Second pass at making AtlasViewerGUI more object oriented. Created 
+separate directories and functions for the major objects:
+
+        headvol, 
+        headsurf, 
+        pialsurf, 
+        refpts, 
+        probe, 
+        digpts, 
+        labelssurf,
+        sensitivity
+"
+Date: Dec 10, 2012
+Files Added: 14
+AtlasViewerGUI.fig, 1.18
+AtlasViewerGUI.m, 1.33
+AtlasViewerGUI_version.m, 1.25
+ChangeLog.txt, 1.21
+ForwardModel/existMCOutput.m, 1.2
+ForwardModel/genForwardMatrix_new.m, 1.3
+ForwardModel/genMCinput.m, 1.4
+Labelssurf/resetLabelssurf.m, 1.1
+Probe/drawMeasChannels.m, 1.1
+Probe/initProbe.m, 1.4
+Probe/initProbeProjection.m, 1.1
+Probe/resetProbe.m, 1.3
+Probe/setProbeDisplay.m, 1.2
+Utils/uibutton.m, 1.1
+
+
+Files Added: 20
+Axesv/initAxesv.m
+Axesv/rotDown.m
+Axesv/rotHorizontalLeft.m
+Axesv/rotHorizontalRight.m
+Axesv/rotUp.m
+Axesv/rotVerticalLeft.m
+Axesv/rotVerticalRight.m
+Axesv/setInitOrientation.m
+Axesv/setInitialAppearance.m
+Axesv/setInitialLighting.m
+ForwardModel/enableSensitivity.m
+ForwardModel/genMCoutput.m
+ForwardModel/initSensitivity.m
+ForwardModel/resetSensitivity.m
+ForwardModel/updateSensitivityMenu.m
+Headsurf/existsHeadsurf.m
+Utils/ishandles.m
+Probe/viewProbe.m
+Probe/pullProbeToHeadsurf.m
+Probe/updateProbeGui.m
+
+Files Deleted: 2
+LoadSaveSurfsPts/map_mesh_idx.m
+LoadSaveSurfsPts/viewPtsOnSurf.m
+
+
+Files Renamed: 38
+LoadSaveSurfsPts/displayDigpts.m
+  Digpts/displayDigpts.m
+LoadSaveSurfsPts/displayHeadSurf.m
+  Headsurf/displayHeadsurf.m
+LoadSaveSurfsPts/displayPialSurf.m
+  Pialsurf/displayPialsurf.m
+LoadSaveSurfsPts/displayRefpts.m
+  Refpts/displayRefpts.m
+LoadSaveSurfsPts/getDigpts.m
+  Digpts/getDigpts.m
+LoadSaveSurfsPts/getHeadSurf.m
+  Headsurf/getHeadsurf.m
+LoadSaveSurfsPts/getHeadVol.m
+  Headvol/getHeadvol.m
+LoadSaveSurfsPts/getPialSurf.m
+  Pialsurf/getPialsurf.m
+LoadSaveSurfsPts/getRefpts.m
+  Refpts/getRefpts.m
+LoadSaveSurfsPts/initDigPts.m
+  Digpts/initDigpts.m
+LoadSaveSurfsPts/initHeadSurf.m
+  Headsurf/initHeadsurf.m
+LoadSaveSurfsPts/initHeadVol.m
+  Headvol/initHeadvol.m
+LoadSaveSurfsPts/initPialSurf.m
+  Pialsurf/initPialsurf.m
+LoadSaveSurfsPts/initRefpts.m
+  Refpts/initRefpts.m
+LoadSaveSurfsPts/loadFSSurface.m
+  Utils/loadFSSurface.m
+LoadSaveSurfsPts/load_fs_pial.m
+  Utils/load_fs_pial.m
+LoadSaveSurfsPts/viewPts.m
+  Utils/viewPts.m
+LoadSaveSurfsPts/viewsurf.m
+  Utils/viewsurf.m
+LoadSaveSurfsPts/viewsurf2.m
+  Utils/viewsurf2.m
+AAL/DistBtw.m
+  Labelssurf/DistBtw.m
+AAL/ProjectionBI.m
+  Labelssurf/ProjectionBI.m
+Labelssurf/displayLabelsSurf.m
+  Labelssurf/displayLabelssurf.m
+Labelssurf/getLabelsSurf.m
+  Labelssurf/getLabelssurf.m
+Labelssurf/initLabelssurf.m
+  Labelssurf/initLabelsSurf.m
+Labelssurf/initLabelssurfProbeProjection.m
+  Labelssurf/initLabelsSurfProbeProjection.m
+Probe/resetProbeGuiObjs.m
+  Probe/resetProbeReg.m
+Registration/probeDigpts/C2S.m
+  Probe/registerDigpts/C2S.m
+Registration/probeDigpts/ar_AlignPoints.m
+  Probe/registerDigpts/ar_AlignPoints.m
+Registration/probeDigpts/getProbeRegMethod.m
+  Probe/registerDigpts/getProbeRegMethod.m
+Registration/probeDigpts/reg_subj2atlas.m
+  Probe/registerDigpts/reg_subj2atlas.m
+Registration/probeSprings/gen_positionprobe_dat.m
+  Probe/registerSprings/gen_positionprobe_dat.m
+Registration/probeSprings/gen_xform_from_pts.m
+  Probe/registerSprings/gen_xform_from_pts.m
+Registration/probeSprings/getRegSpringError.m
+  Probe/registerSprings/getRegSpringError.m
+Registration/probeSprings/optconn_auto_gen.m
+  Probe/registerSprings/optconn_auto_gen.m
+Registration/probeSprings/positionprobe.m
+  Probe/registerSprings/positionprobe.m
+Registration/probeSprings/registerProbe2Head.m
+  Probe/registerSprings/registerProbe2Head.m
+Registration/probeSprings/spring2posprobe.m
+  Probe/registerSprings/spring2posprobe.m
+Registration/probeSprings/write_positionprobe_dat.m
+  Probe/registerSprings/write_positionprobe_dat.m
+
+
+
+==============================================
+v1.2.1
+
+Commit Notes:
+"
+-- Write utilities to convert freesurfer mri files to viewer.
+(task created, Nov 23, 2012)
+
+-- Revise rules and filenames for loading subject files. 
+AtlasViewerGUI should try to load all the files that are in subject 
+directory: digtized points and mri. 
+
+When files are loaded all the accompanying tranformation files should also 
+be loaded and applied with the goal of tranforming all objects to viewer 
+space according to the AtlasViewerGUI space design model. If mri don't exist 
+in the subject directory, load atlas mri files and then through a menu 
+option give user opportunity to register atlas mri files to the digitized 
+points registered points. 
+(task created, Nov 23, 2012)
+"
+Date: Dec 19, 2012
+Files Changed: 36
+AtlasViewerGUI.fig, 1.20
+AtlasViewerGUI.m, 1.35
+AtlasViewerGUI_version.m, 1.27
+Axesv/initAxesv.m, 1.2
+Axesv/setInitialAppearance.m, 1.2
+Axesv/setInitialLighting.m, 1.2
+Digpts/displayDigpts.m, 1.2
+Digpts/getDigpts.m, 1.2
+Digpts/initDigpts.m, 1.2
+ForwardModel/existMCOutput.m, 1.4
+ForwardModel/genMCinput.m, 1.6
+ForwardModel/genMCoutput.m, 1.2
+ForwardModel/get_tiss_prop.m, 1.4
+ForwardModel/initSensitivity.m, 1.2
+ForwardModel/projVoltoMesh.m, 1.2
+ForwardModel/resetSensitivity.m, 1.4
+ForwardModel/updateSensitivityMenu.m, 1.4
+Headsurf/existsHeadsurf.m, 1.2
+Headsurf/getHeadsurf.m, 1.2
+Headvol/getHeadvol.m, 1.2
+Headvol/initHeadvol.m, 1.2
+Labelssurf/getLabelssurf.m, 1.2
+Pialsurf/displayPialsurf.m, 1.2
+Pialsurf/getPialsurf.m, 1.2
+Probe/drawMeasChannels.m, 1.2
+Probe/setProbeDisplay.m, 1.2
+Probe/viewProbe.m, 1.3
+Probe/registerSprings/registerProbe2Head.m, 1.4
+Probe/registerSprings/spring2posprobe.m, 1.2
+Refpts/displayRefpts.m, 1.2
+Refpts/getRefpts.m, 1.2
+Refpts/initRefpts.m, 1.2
+Utils/getFileDateStruct.m, 1.2
+Utils/load_fs_pial.m, 1.2
+Utils/save_vox.m, 1.2
+Utils/xform_apply_vol_smooth.m, 1.3
+
+Files Added: 35
+ForwardModel/displaySensitivity.m
+ForwardModel/getSensitivity.m
+ForwardModel/resetMC.m
+Probe/resetProbeGui.m
+Utils/fs2viewer/create_hseg.m
+Utils/fs2viewer/fs2headsurf.m
+Utils/fs2viewer/fs2headvol.m
+Utils/fs2viewer/fs2pialsurf.m
+Utils/fs2viewer/get_nii_vox2ras.m
+Utils/fs2viewer/headvol2headsurf.m
+Utils/fs2viewer/initFs.m
+Utils/fs2viewer/initFs2Viewer.m
+Utils/fs2viewer/isolatehead.m
+Utils/fs2viewer/readsurf_trans.m
+Utils/fs2viewer/segment_head.m
+Utils/fs2viewer/segment_head_vols.m
+Utils/fs2viewer/surf_file2vol.m
+Utils/fs2viewer/surface2volume.m
+Utils/fs2viewer/vol2constvol.m
+Utils/isregistered.m
+Utils/fs2viewer/create_hseg.m
+Utils/fs2viewer/fs2headsurf.m
+Utils/fs2viewer/fs2headvol.m
+Utils/fs2viewer/fs2pialsurf.m
+Utils/fs2viewer/get_nii_vox2ras.m
+Utils/fs2viewer/headvol2headsurf.m
+Utils/fs2viewer/initFs.m
+Utils/fs2viewer/initFs2Viewer.m
+Utils/fs2viewer/isolatehead.m
+Utils/fs2viewer/readsurf_trans.m
+Utils/fs2viewer/segment_head.m
+Utils/fs2viewer/segment_head_vols.m
+Utils/fs2viewer/surf_file2vol.m
+Utils/fs2viewer/surface2volume.m
+Utils/fs2viewer/vol2constvol.m
+
+Files Deleted: 1
+ForwardModel/enableSensitivity.m
+
+Files Renamed: 2
+Probe/updateProbeGui.m
+   Probe/updateProbeGuiControls.m
+ForwardModel/genSensitivityProfile.m
+   ForwardModel/genForwardMatrix_new.m
+
+===========================================================
+v1.2.9
+
+Commit Notes:
+"
+Incorporate generating 10-20 points into AtlasViewerGUI. Also solve the 
+get_10_20_pts length problem and other issues with getting 10-20 points. 
+(task created, Dec 15, 2012)
+"
+Date: Jan 3, 2013
+Files Changed: 9
+AtlasViewerGUI.fig, 1.22
+AtlasViewerGUI.m, 1.37
+AtlasViewerGUI_version.m, 1.35
+Axesv/initAxesv.m, 1.3
+Digpts/displayDigpts.m, 1.3
+Probe/setProbeDisplay.m,  1.5
+Refpts/displayRefpts.m, 1.3
+Refpts/getRefpts.m, 1.3
+Refpts/initRefpts.m, 1.4
+
+Files Added: 8
+Refpts/curve_gen.m
+Refpts/curve_walk.m
+Refpts/curvelen.m
+Refpts/find_curve_path.m
+Refpts/gen_sparcer_curve.m
+Refpts/get_10_20_pts.m
+Refpts/plane_equation.m
+Refpts/plane_surf_intersect.m
+
+
+==========================================================
+v1.2.10
+
+Commit Notes:
+"
+Fix a small bug in the code to generate 10-20 points. Also added moving of 
+old refpts_10_20 file to a .bak file to save old results. Lastly added a 
+function to calculate mesh density (meshdensity.m) to automatically set 
+how many points to throw out in the 10-20 curve generation code (curve_gen.m).
+"
+Date: Jan 4, 2013
+Files Changed: 5
+AtlasViewerGUI.m, 1.38
+AtlasViewerGUI_version.m, 1.36
+Refpts/curve_gen.m, 1.2
+Refpts/gen_sparcer_curve.m, 1.2
+Refpts/getRefpts.m, 1.4
+Refpts/get_10_20_pts.m, 1.2
+
+
+
+==========================================================
+v1.2.11
+
+Commit Notes:
+"
+Changed limitation in digpts reading of reference pts: it used to be 
+limited to just the 5 landmarks nz,iz,al,ar,cz. Expanded it to 28 new eeg
+labels. Also fixed bug in getDigpts.m reading of digpts.txt file. 
+"
+Date: Jan 4, 2013
+Files Changed: 3
+AtlasViewerGUI.m, 1.39
+AtlasViewerGUI_version.m, 1.37
+Digpts/getDigpts.m, 1.3
+
+
+
+==========================================================
+v1.2.12
+
+Commit Notes:
+"
+Sensitivity profile has no sensitivity for various channels
+no matter how many photons the MC simulation runs. John Spenser 
+reported this problem. Problem was that not all optodes were 
+directly in head voxels. Generating sensitivity matrix gets  
+the fluence for normalization from the source optode position. 
+If the source optode position is in the air then you get no 
+sensitivity when normalizing. Fixed problem by making sure 
+all optode positionsa are in the actual head voxels when probe 
+is registered to head surface.
+"
+Date: Jan 7, 2013
+Files Changed: 6
+AtlasViewerGUI.m, 1.39
+ForwardModel/genSensitivityProfile.m, 1.1
+ForwardModel/initSensitivity.m, 1.2
+ForwardModel/load_tMCimg_2pt.m, 1.1
+Probe/pullProbeToHeadsurf.m, 1.1
+Utils/pullPtsToSurf.m, 1.1
+
+=========================================
+v1.2.13
+
+Commit Notes:
+"
+Forgot to add checkExistingSensitivityProfile.m to cvs project for last commit.
+"
+Date: Jan 8, 2013
+Files Changed: 1
+AtlasViewerGUI_version.m, 1.38
+
+Files Added: 1
+ForwardModel/checkExistingSensitivityProfile.m
+
+
+
+=========================================
+v1.2.14
+
+Commit Notes:
+"
+-- Allow user to set number of photons to run in MC. 
+
+-- Automatically save A matrix as volume and surface as separate files.
+(In the future, export A matrix as NIFTI)
+
+-- Cleaned up generating of sensitivity profile. Got rid of wrong or needless
+code. 
+
+-- Fixed incorrect calculation of mni coordinates of probe projection onto 
+cortex. 
+
+-- Fixed incorrect reset of sensitivity/mc. 
+
+-- Forgot to commit a new file for calculation of 10-20 points from previous 
+commit. 
+
+-- Changed when the menu item for calculating 10-20 points is enabled. Now it 
+is disabled when there are 33 10-20 ref pts. If there are less and the 5 anat
+landmarks are available then it is enabled.
+"
+Date: Jan 21, 2013
+Files Changed: 17
+AtlasViewerGUI.fig, 1.23
+AtlasViewerGUI.m, 1.41
+AtlasViewerGUI_version.m, 1.40
+ForwardModel/checkExistingSensitivityProfile.m, 1.2
+ForwardModel/displaySensitivity.m, 1.2
+ForwardModel/existMCOutput.m, 1.5
+ForwardModel/genMCoutput.m, 1.3
+ForwardModel/genSensitivityProfile.m, 1.3
+ForwardModel/getSensitivity.m, 1.2
+ForwardModel/initSensitivity.m, 1.4
+ForwardModel/projVoltoMesh.m, 1.5
+ForwardModel/resetMC.m, 1.2
+ForwardModel/updateSensitivityMenu.m, 1.3
+Probe/initProbe.m, 1.6
+Refpts/getRefpts.m, 1.5
+Refpts/initRefpts.m, 1.5
+Utils/getFileDateStruct.m, 1.3
+
+Files Changed:
+ForwardModel/enableSensitivityMatrixVolume.m
+Utils/meshdensity.m
+
+
+
+======================================================
+v1.2.15
+
+Commit Notes:
+"
+Saved tranformation from orginal head volume to the head volume in viewer space was
+incorrect. Fixed it. Also added deletion of AdotVol.mat and AdotVolAvg.mat when 
+generating new monte carlo input/output files.
+"
+Date: Feb 5, 2013
+Files Changed: 4
+AtlasViewerGUI.m, 1.42
+AtlasViewerGUI_version.m, 1.41
+ForwardModel/genMCinput.m, 1.7
+ForwardModel/genMCoutput.m, 1.4
+
+
+
+======================================================
+v1.3
+
+Commit Note: 
+"
+Add tMCimg package to HOMER2. (task created, Feb 14, 2013)
+"
+Date: Feb 20, 2013
+Files Added: 18
+tMCimg/AUTHORS.txt
+tMCimg/LICENSE.txt
+tMCimg/install_linux_mac.sh
+tMCimg/install_win.bat
+tMCimg/makefile
+tMCimg/makefile.linux_mac
+tMCimg/makefile.win
+tMCimg/src/makefile
+tMCimg/src/makefile.Darwin
+tMCimg/src/makefile.Linux
+tMCimg/src/makefile.unix
+tMCimg/src/makefile.win
+tMCimg/src/tMCimg.c
+tMCimg/src/tMCimg.sln
+tMCimg/src/tMCimg.vcproj
+tMCimg/src/tMCimg_bcb.bdsproj
+tMCimg/src/tMCimg_bcb.bpf
+tMCimg/src/tMCimg_bcb.res
+
+
+======================================================
+v1.3.1
+
+Commit Note: 
+"
+Add tMCimg package to HOMER2. (task created, Feb 14, 2013)
+"
+Date: Apr 2, 2013
+Files Changed: 34
+AtlasViewerGUI.fig                              1.25                               
+AtlasViewerGUI.m                                1.45
+Digpts/displayDigpts.m                           1.4                
+Headsurf/displayHeadsurf.m                       1.2                
+Labelssurf/displayLabelssurf.m                   1.2                
+Pialsurf/displayPialsurf.m                       1.3                
+Refpts/displayRefpts.m                           1.4                
+ForwardModel/displaySensitivity.m                1.3                
+Probe/drawMeasChannels.m                         1.4                
+Digpts/getDigpts.m                               1.4                
+Headsurf/getHeadsurf.m                           1.3                
+Headvol/getHeadvol.m                             1.3                
+Labelssurf/getLabelssurf.m                       1.3                
+Pialsurf/getPialsurf.m                           1.3                
+Refpts/getRefpts.m                               1.6                
+Axesv/initAxesv.m                                1.4                
+Digpts/initDigpts.m                              1.3                
+Headsurf/initHeadsurf.m                          1.2                
+Headvol/initHeadvol.m                            1.3                
+Labelssurf/initLabelssurf.m                      1.2                
+Labelssurf/initLabelssurfProbeProjection.m       1.2                
+Pialsurf/initPialsurf.m                          1.2                
+Probe/initProbe.m                                1.7                
+Refpts/initRefpts.m                              1.6                
+ForwardModel/initSensitivity.m                   1.6                
+Axesv/rotDown.m                                  1.2                
+Axesv/rotHorizontalLeft.m                        1.2                
+Axesv/rotHorizontalRight.m                       1.2                
+Axesv/rotUp.m                                    1.2                
+Axesv/rotVerticalLeft.m                          1.2                
+Axesv/rotVerticalRight.m                         1.2                
+Probe/updateProbeGuiControls.m                   1.2                
+Probe/viewProbe.m                                1.3                
+Utils/viewPts.m                                  1.2                
+                                                                        
+Files Added: 11
+Axesv/displayAxesv.m                               0                
+Axesv/setLighting.m                                0                
+Axesv/setOrientation.m                             0                
+Probe/displayProbe.m                               0                
+Probe/displaySprings.m                             0                
+Utils/fieldvals.m                                  0                
+Utils/fieldvalues.m                                0                
+Probe/getProbe.m                                   0                
+Guiobj/displayObjects.m                            0                
+Guiobj/restoreObject.m                             0                
+Guiobj/saveObject.m                                0                
+                                                                        
+Files Deleted: 3
+Axesv/setInitialAppearance.m                    -1.2                
+Axesv/setInitialLighting.m                      -1.2                
+Axesv/setInitOrientation.m                      -1.1                
+
+
+======================================================================
+v1.3.2
+
+Commit Note: 
+"
+Second part of saving registration state. Fixed a number of bugs 
+including a) springs not displaying correctly b) axes not displaying 
+correctly (like zoom or text not being visible because it's beyond axes 
+limits. Also added functionality to be able add probe to digitixed points
+which were already loaded. Using digitizedf points as anchor points for 
+a probe. We already added this functionality previously but it didn't work 
+for several cases. Also made getDigpts.m not dependent on optode order
+by adding srcmap and detmap.  
+"
+Date: Apr 8, 2013
+Files Changed: 30
+AtlasViewerGUI.m,                               1.47
+AtlasViewerGUI_version.m,                       1.44
+Axesv/displayAxesv.m,                            1.2
+Axesv/initAxesv.m,                               1.5
+Digpts/displayDigpts.m,                          1.5
+Digpts/getDigpts.m,                              1.5
+Digpts/initDigpts.m,                             1.4
+ForwardModel/displaySensitivity.m,               1.3
+ForwardModel/getSensitivity.m,                   1.3
+Guiobj/displayObjects.m,                         1.2
+Headsurf/displayHeadsurf.m,                      1.3
+Headsurf/getHeadsurf.m,                          1.4
+Headvol/getHeadvol.m,                            1.4
+Labelssurf/displayLabelssurf.m,                  1.3
+Labelssurf/getLabelssurf.m,                      1.4
+Pialsurf/displayPialsurf.m,                      1.4
+Pialsurf/getPialsurf.m,                          1.4
+Probe/displayProbe.m,                            1.2
+Probe/drawMeasChannels.m,                        1.5
+Probe/findMeasMidPts.m,                          1.2
+Probe/getProbe.m,                                1.2
+Probe/initProbe.m,                               1.8
+Probe/setProbeDisplay.m,                         1.6
+Probe/updateProbeGuiControls.m,                  1.3
+Probe/registerSprings/positionprobe.m,           1.2
+Probe/registerSprings/registerProbe2Head.m,      1.3
+Probe/registerSprings/spring2posprobe.m,         1.3
+Refpts/displayRefpts.m,                          1.5
+Refpts/getRefpts.m,                              1.7
+Utils/viewPts.m,                                 1.3
+
+
+===============================================================
+v1.3.3
+
+Commit Note: 
+"
+Forgot to add new file resetDigpts.m part of saving registration state during last commit.
+"
+Date: Apr 9, 2013
+Files Added: 1
+Digpts/resetDigpts.m,                            1.1
+
+Files Changed: 1
+AtlasViewerGUI_version.m,                       1.45
+
+
+
+================================================================
+v1.3.4
+
+Commit Note: 
+"
+Forgot to add new file setCameraTarget.m part of saving registration state during last commit.
+Also fixed faulty cvs commit from linux of 16 .m files where it inserted bad end of line 
+characters.
+"
+Date: Apr 9, 2013
+Files Changed: 16
+AtlasViewerGUI.m                1.48                
+AtlasViewerGUI_version.m        1.46                
+getDigpts.m                      1.6    Digpts      
+displayRefpts.m                  1.6    Refpts      
+getRefpts.m                      1.8    Refpts      
+getPialsurf.m                    1.5    Pialsurf    
+displayPialsurf.m                1.5    Pialsurf    
+getHeadsurf.m                    1.5    Headsurf    
+displayHeadsurf.m                1.4    Headsurf    
+getLabelssurf.m                  1.5    Labelssurf  
+displayLabelssurf.m              1.4    Labelssurf  
+getHeadvol.m                     1.5    Headvol     
+displayObjects.m                 1.3    Guiobj      
+getSensitivity.m                 1.4    ForwardModel
+displaySensitivity.m             1.4    ForwardModel
+viewPts.m                        1.4    Utils       
+initAxesv.m                      1.6    Axesv       
+
+Files Added: 1
+setCameraTarget.m                  0    Axesv       
+
+Files Removed: 1
+initDigptsExisting.m            -1.1                
+
+Files Renamed: 1
+disableDigpts.m                 -1.1    
+   disableDigpts.m                   0      Digpts      
+
+================================================================
+v1.3.5
+
+Commit Note: 
+"
+Various enhancements to probe viewing and registration: a) Fixed feature to 
+display optodes as circles rather than numbered text (To do: add gui button 
+or checkbox to toggle between the two). b) Also partially fixed lopsided 
+display of registered optodes on the head. It seem the lift argument to lift 
+the optodes off the surface a little for easier viewing has a bug. For now 
+we don't lift at all and the optodes don't appear hidden but more than that 
+it views correctly and also it views consistently the same between when you 
+register optodes and when they are recovered from a saved state. c) Cleaned 
+up probe registration code: now the probe doesn't disappear between the time 
+you press the "Register Probe" button and when the optodes land on the head.
+"
+Date: Apr 15, 2013
+Files Changed: 16
+AtlasViewerGUI_version.m                1.46                            
+viewProbe.m                              1.3    Probe                   
+displaySprings.m                         1.1    Probe                   
+drawMeasChannels.m                       1.5    Probe                   
+setOptodeNumbering.m                     1.1    Probe                   
+pullProbeToHeadsurf.m                    1.2    Probe                   
+linextriangle.m                          1.1    metch                   
+getProbe.m                               1.2    Probe                   
+AtlasViewerGUI.fig                      1.25                            
+AtlasViewerGUI.m                        1.48                            
+setProbeDisplay.m                        1.6    Probe                   
+displayProbe.m                           1.2    Probe                   
+displaySensitivity.m                     1.4    ForwardModel            
+updateProbeGuiControls.m                 1.3    Probe                   
+initProbe.m                              1.8    Probe                   
+positionprobe.m                          1.2    Probe/registerSprings   
+
+Files Added: 2
+cell2array.m                               0    Utils                   
+duplicate_anchors.m                        0    Probe/registerSprings
+
+
+=========================================================================
+v1.3.6
+
+Commit Note: 
+"
+More features, enhancements and fixes to probe viewing and registration: 
+a) Fixed problem and cleaned up code dealing with lifting optodes off 
+head surface for easier viewing. b) Also finished adding gui control for 
+toggling between numbered optodes and circle optodes. c) Changed wrong 
+window title for file menu item 'Change Directory'.
+"
+Date: Apr 17, 2013
+Files Changed: 13
+initProbe.m                   1.9       Probe
+AtlasViewerGUI.m             1.49            
+AtlasViewerGUI_version.m     1.47
+setOptodeNumbering.m          1.2       Probe
+updateProbeGuiControls.m      1.4       Probe
+AtlasViewerGUI.fig           1.26            
+viewProbe.m                   1.4       Probe
+resetProbe.m                  1.4       Probe
+resetProbeGui.m               1.1       Probe
+setProbeDisplay.m             1.7       Probe
+viewPts.m                     1.4       Utils
+cell2array.m                  1.1       Utils
+prepPtsStructForViewing.m     1.2       Utils
+
+
+Files Removed: 1
+resetProbeReg.m              -1.1       Probe
+
+
+=========================================================================
+v1.3.7
+
+Commit Note: 
+"
+Fixed small bugs related to where the viewer T_2ras matrix is obtained.
+"
+Date: Apr 23, 2013
+Files Changed: 2
+AtlasViewerGUI_version.m        1.49
+AtlasViewerGUI.m                1.51
+
+
+=========================================================================
+v1.3.8
+
+Commit Note: 
+"
+Fixed another small bug related to getting sensitivity profile. And changed the wording 
+of gui text for optode SD mode and view optodes as circles.
+"
+Date: Apr 25, 2013
+Files Changed: 4
+
+AtlasViewerGUI.fig              1.28
+AtlasViewerGUI_version.m        1.50
+genSensitivityProfile.m          1.7
+AtlasViewerGUI.m                1.52
+
+
+=========================================================================
+v1.3.9
+
+Commit Note: 
+"
+Changed path separator characters in getSubjArgs and getAtlasArgs from '/' to filesep. Also added check in displayAxes that headsurf mesh vertices exist. Not enough to use isempty(headsurf).
+"
+Date: Sep 3, 2013
+Files Changed: 3
+
+AtlasViewerGUI.fig              1.55
+AtlasViewerGUI_version.m        1.51
+displayAxes.m                   1.3
+
+

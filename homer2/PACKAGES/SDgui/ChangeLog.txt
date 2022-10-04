@@ -1,0 +1,211 @@
+
+v0.9
+
+Comment: 
+Changes to allow user to specify spring connectivity 
+for probe positioning on a head
+Date: 05/29/2012
+
+Files changed:
+SDgui.fig, 1.16
+SDgui.m, 1.9
+distmatrix.m, 1.1
+nearest_point.m,  1.1
+optode_tbls/optode_det_tbl_CellEditCallback.m, 1.4
+optode_tbls/optode_src_tbl_CellEditCallback.m, 1.4
+probe_geometry_axes/probe_geometry_axes_ButtonDownFcn.m, 1.5
+probe_geometry_axes/probe_geometry_axes_CreateFcn.m, 1.7
+probe_geometry_axes/probe_geometry_axes_DetUpdate.m, 1.9
+probe_geometry_axes/probe_geometry_axes_Init.m, 1.9
+probe_geometry_axes/probe_geometry_axes_SrcUpdate.m, 1.12
+sample_data/probe2.SD, 1.4
+sample_data/probe_large.SD, 1.1
+sd_data/sd_data_Clear.m, 1.2
+sd_data/sd_data_ErrorFix.m, 1.4
+sd_data/sd_data_Get.m, 1.2
+sd_data/sd_data_Init.m, 1.1
+sd_file/sd_file_open.m, 1.6
+sd_file/sd_file_save.m, 1.10
+
+
+Files added 6:
+redraw_text.m
+redraw_text_many.m
+resize_axes.m
+set_threshold.m
+optode_tbls/error_check_optode_tbls.m
+probe_geometry_axes/set_view_probe_gemetry_axes.m
+
+Fles deleted 6:
+optode_tbls/error_check.m
+probe_geometry_axes/redraw_text.m
+probe_geometry_axes/redraw_text_many.m
+probe_geometry_axes/resize_axes.m
+probe_geometry_axes/set_threshold.m
+probe_geometry_axes/set_view.m
+
+
+=================================
+v1.0.3
+
+Commit note: "
+Modified save file button to detect and notify when a file already exists. Asks
+user whether they want to overwrite the existing file.
+"
+Date: Aug 16, 2012
+SDgui\SDgui_version.m
+SDgui\sd_file\sd_file_save_bttn_Callback.m
+
+=================================
+v1.2
+
+Commit Note: "
+Changes to generate monte carlo simulation output and 
+sensitivivity profile. Now if subject's digitized points 
+exist, they are displayed instead of the default atlas head. 
+The user then has to register atlas to subject space and 
+AtlasViewerGUI will display atlas surfaces in subject 
+digitized point space. If the probe is also digitized 
+then user doen't need to import probe only bring it to the 
+subject's surface by clicking the Register Probe button.  
+
+Consolidated the various ways of importing probe into 
+one menu option (used to have LoadProbe and ImportProbe) 
+and function. 
+
+Got rid of references to SDgui's global SD structure in 
+and the function AtlasViewerGUI_SDgui. It isn't needed. Now 
+SDgui communicates with AtlasViewerGUI by updating 
+atlasViewer.probe through the sd_data_Set* functions (and this 
+should be the only place this is done. 
+"
+Date: Oct 22, 2012
+Files Changed: 13
+PACKAGES/SDgui/SDgui_AtlasViewerGUI.m, 1.2
+PACKAGES/SDgui/SDgui_version.m, 1.5
+PACKAGES/SDgui/sd_data/sd_data_Set.m, 1.2
+PACKAGES/SDgui/sd_data/sd_data_SetAnchorList.m, 1.2
+PACKAGES/SDgui/sd_data/sd_data_SetDetPos.m, 1.2
+PACKAGES/SDgui/sd_data/sd_data_SetDummyPos.m, 1.2
+PACKAGES/SDgui/sd_data/sd_data_SetLambda.m, 1.3
+PACKAGES/SDgui/sd_data/sd_data_SetMeasList.m, 1.2
+PACKAGES/SDgui/sd_data/sd_data_SetSpringList.m, 1.2
+PACKAGES/SDgui/sd_data/sd_data_SetSrcMap.m, 1.3
+PACKAGES/SDgui/sd_data/sd_data_SetSrcMapDefault.m, 1.2
+PACKAGES/SDgui/sd_data/sd_data_SetSrcMapEntry.m, 1.2
+PACKAGES/SDgui/sd_data/sd_data_SetSrcPos.m, 1.2
+
+===================================
+v1.2.1
+
+Commit Note: "
+1. Got rid of Update sensitivity button and instead sensitivity 
+updates automatically when edit channels sensitivity is changed
+to a different channel. 
+
+2. Name of Generate Sensitivity profile menu item changed to 
+Generate/Load Sensitivity profile. Also it is automatically 
+enabled when genForwardMatrix_new.mat is found after probe 
+registration
+
+3. Name of pushbutton Register Probe changed to Register Probe 
+to Surface.
+
+4. Fixed color problem with meas channels when updating sensitivity 
+and hiding and then showing measurement channels.
+
+5. Fixed noptorig not showing the correct number of optodes. noptorig 
+is the number of optodes without dummy points if they exist. If  
+spring registration isn't used it should just equal the total number 
+of optodes. 
+"
+Date: Oct 23, 2012
+Files Changed: 2
+PACKAGES/SDgui/SDgui_AtlasViewerGUI.m, 1.2
+PACKAGES/SDgui/SDgui_version.m, 1.5
+
+=====================================
+v1.2.2
+
+Commit Note: "
+"
+-- Fixed incorrect text label for the detectors optodes table in SDgui.
+-- Fixed crash when SDgui is closed as well as minor fixes: lack of semi colon
+-- small fixes for Jay mesh.vertices
+-- Fixed error in aal labels vertices. We weren't getting correct projection of optodes to cortex
+-- Projecting optodes to cortex with no digitized points used to work then broke with last commit. 
+Fixed in this commit
+"
+Date: Oct 23, 2012
+Files Changed: 4
+PACKAGES/SDgui/SDgui.fig, 1.20
+PACKAGES/SDgui/SDgui.m, 1.12
+PACKAGES/SDgui/SDgui_AtlasViewerGUI.m, 1.4, 1.3
+PACKAGES/SDgui/SDgui_version.m,	1.6
+
+
+=====================================
+v1.2.3
+
+Commit Note: "
+"
+-- Fix problem when changing the spring flexibility in SDgui
+it doesn't update the probe in AtlasViewerGUI.
+(task created, Nov 9, 2012)
+
+-- Removed function isnumber from PACKAGE/Utils, making all SDgui
+dependencies under SDgui.
+"
+Date: Nov 27, 2012
+Files Changed: 4
+SDgui/SDgui_version.m, 1.8
+SDgui/optode_tbls2/optode_anchor_tbl_ErrCheck.m, 1.2
+SDgui/sd_data/sd_data_AddEditSpring.m, 1.2
+
+
+======================================
+v1.2.4
+
+Commit Note: 
+"
+-- Fixed: probe not updating in AtlasViewerGUI when source is deleted in SDgui.
+
+-- Fixed: probe not updating in AtlasViewGUI when opening another probe in SDgui
+after an initial one has been opened.
+"
+Date: Dec 3, 2012
+Files Changed: 4
+PACKAGES/SDgui/ChangeLog.txt, 1.7
+PACKAGES/SDgui/SDgui_version.m, 1.9
+PACKAGES/SDgui/optode_tbls/optode_src_tbl_CellEditCallback.m, 1.6
+PACKAGES/SDgui/sd_data/sd_data_Init.m, 1.3
+
+
+
+======================================
+v1.2.6
+
+Commit Note: 
+"
+Have SDgui load file search show SD and sd simultaneously. Also fixed a bug SDgui
+closes it doesn't update atlasViewer probe correctly. 
+"
+Date: Jan 21, 2013
+Files Changed: 3
+PACKAGES/SDgui/SDgui.m, 1.12
+PACKAGES/SDgui/SDgui_AtlasViewerGUI.m, 1.4
+PACKAGES/SDgui/SDgui_version.m, 1.10
+
+=======================================
+v1.2.7
+
+Commit Note: 
+"
+Slight modification to file search showing SD and sd simultaneously. Made .nirs separate
+whereas before it was grouped with .SD and .sd.
+"
+Date: Jan 21, 2013
+Files Changed: 3
+PACKAGES/SDgui/SDgui.m, 1.13
+PACKAGES/SDgui/SDgui_version.m, 1.11
+

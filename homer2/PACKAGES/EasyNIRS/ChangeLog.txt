@@ -1,0 +1,2311 @@
+
+*** v0.8.3
+======
+1. When there's one trial, session HRF std error is nonzero. 
+Date: 02/23/11
+Commit Note:
+"*** V0.8.3 - Found bug with HRF std and dcSum2 calculation which David fixed."
+Files: 2
+hmrBlockAvg.m, 1.7
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.38
+
+
+*** v0.9.0
+======
+1. Proposal for simplifying hmr structure and generalizing 
+HRF calculations and plotting: 
+Date: 02/23/11
+Commit Note:
+*** V0.9.0 - Clean up and design change to hmr group structure to allow easier computation 
+of group, session and run HRF and procResult in general. a) Finished implementing the 
+group tree structure that existed before but only for group calculations as opposed to 
+single file calculations. Made group structure the central object in EasyNIRS, with every 
+file represented as a node in it with a run, session and group ids. b) Moved procParam 
+and procResult out of the current file structure and made them private fields for every 
+node in the group tree. c) Unified the HRF calculation and plotting of group, session and 
+run in the EasyNIRS GUI. Redesigned the plot panel button states. d) Changed plot probe 
+to work with the tree structure. 
+Files: 16 
+plotProbe.m, 1.10
+PACKAGES/EasyNIRS/checkGrpProcParamValidity.m, 1.1
+PACKAGES/EasyNIRS/EasyNIRS.fig, 1.20
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.39
+PACKAGES/EasyNIRS/EasyNIRS_CheckPlotButtons.m, 1.11
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.15
+PACKAGES/EasyNIRS/EasyNIRS_EnablePlotButtons.m, 1.4
+PACKAGES/EasyNIRS/EasyNIRS_NIRSsignalProcessEnable.m, 1.2
+PACKAGES/EasyNIRS/listboxFiles_getCurrSelection.m, 1.1
+PACKAGES/EasyNIRS/loadCurrNIRSFile.m, 1.1
+PACKAGES/EasyNIRS/loadNIRS2hmr.m, 1.1
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.2
+PACKAGES/EasyNIRS/Processing/EasyNIRS_Process.m, 1.4
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.4
+PACKAGES/Utils/genNIRSSessData.m, 1.1
+-------
+2. We're not garanteed to load files such processOpt.cfg 
+from current directory on windows.
+Commit Note:
+"Prepended a current directory string to file names used in file operations 
+to make sure that a file is in the current directory and not somewhere else 
+in the search path. This is especially important on Windows which isn't
+garanteed to have the current directory first in it's search path."
+Date: 02/24/11
+Files: 5
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.40
+PACKAGES/EasyNIRS/loadCurrNIRSFile.m, 1.2
+PACKAGES/EasyNIRS/loadNIRS2hmr.m, 1.2
+PACKAGES/EasyNIRS/Processing/processOpt.m, 1.4
+PACKAGES/stimGUI/stimGUI_GetConditions.m, 1.2
+--------
+3. After changes to stim, stim conditions and stim table userdata 
+in stimGUI, the EasyNIRS gui not being updated correctly and unable to 
+save these changes to .nirs file. 
+Commit Note:
+"Fixed errors in stim transfer from hmr to stim global variables and 
+cleaned up the way EasyNIRS is updated when there are stim changes 
+in stimGUI."
+Date: 02/24/11
+Files: 6
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.41
+PACKAGES/EasyNIRS/EasyNIRS_stimDataUpdate.m, 1.4
+PACKAGES/EasyNIRS/loadCurrNIRSFile.m, 1.3
+PACKAGES/stimGUI/stimGUI.m, 1.12
+PACKAGES/stimGUI/stimGUI_AddEditDelete.m, 1.5
+PACKAGES/stimGUI/stimGUI_DisplayData_StimCallback.m, 1.6
+--------
+4. EasyNIRS gets error when file names have the run name in 
+an unexpected place. 
+Commit Note:
+"Expanded the file format to allow run name to be anywhere in the 
+file name as long as there's a subject name prefix. If a run name 
+cannot be found, the file is treated as it's own session with one
+run."
+Date: 02/25/11
+Files: 1
+PACKAGES/EasyNIRS/loadNIRS2hmr.m, 1.3
+
+
+*** v0.9.1
+======
+1. Make stim user data work. 
+Commit Note:
+"Implementation of stim user data table to include or reject stims.
+Changes to ProcessOpt and processing stream to handle varaible number 
+of parameters of parameters for a processing function.. Moved user data 
+table out of hmr.stim and into group runs."
+Date: 03/11/11
+Files: 17
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.42
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.16
+PACKAGES/EasyNIRS/EasyNIRS_saveUserDataToCurrRun.m, 1.1
+PACKAGES/EasyNIRS/listboxFiles_setCurrSelection.m, 1.1
+PACKAGES/EasyNIRS/EasyNIRS_stimDataUpdate.m, 1.5
+PACKAGES/EasyNIRS/loadCurrNIRSFile.m, 1.4
+PACKAGES/EasyNIRS/loadNIRS2hmr.m, 1.4
+PACKAGES/EasyNIRS/Processing/EasyNIRS_Process.m, 1.5
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt.m, 1.5
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.5
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Update.m, 1.1
+PACKAGES/EasyNIRS/Processing/enStimIncData_varargin.m, 1.1
+PACKAGES/EasyNIRS/Processing/processOpt.m, 1.5
+PACKAGES/EasyNIRS/Processing/processOpt_default.cfg, 1.4
+PACKAGES/stimGUI/stimGUI.m, 1.13
+PACKAGES/stimGUI/stimGUI_DisplayData.m, 1.9
+PACKAGES/stimGUI/tableUserData_Update.m, 1.3
+---------
+2. Misc. bugs and enhancements noticed by David and Jay after the stim user 
+data implementation.
+Commit Note:
+"a) Fix for error when tHRFs not same in group avg calculation due to rounding error. 
+Jay got rid of it in previous commits. David restored it. b) Changed calculation
+of which channels to include and exclude in group HRF using subject standard 
+error. Changed nTrials-1 to nTrials in the standard error formula. This might have
+caused incorrect exclusions of channels with one stim. c) Change name of Calc popup 
+menu to have Calculate in text and the options group, session, run. d) Get rid of 
+printout appearing when Calc Sess is chosen. e) Perform a check on the plot buttons 
+when a new file is selected in listboxFiles. f) David found bug: if we compensate 
+by adding a condition to match the number of columns in s, then save this in 
+stimConditionNames.cfg. g) Don't sort conditions, since we don't allow deletion of 
+conditions. h) Manually excluded stims in hmr.s need to be zeroed out in 
+EasyNIRS_Process.m - otherwise they're transferred to procResult.s and can't be 
+distinguished from stims excluded by processing options. i) Changed stim conditions 
+legend to display only the solid colors of the conditions represented by the 
+plotted stims - removed the conditions of the excluded stims from legend."
+Date: 03/15/11
+Files: 10
+PACKAGES/EasyNIRS/EasyNIRS.fig, 1.21
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.43
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.17
+PACKAGES/EasyNIRS/EasyNIRS_NIRSsignalProcessEnable.m, 1.3
+PACKAGES/EasyNIRS/checkGrpProcParamValidity.m, 1.2
+PACKAGES/EasyNIRS/listboxFiles_setCurrSelection.m, 1.2
+PACKAGES/EasyNIRS/loadCurrNIRSFile.m, 1.5
+PACKAGES/EasyNIRS/Processing/EasyNIRS_Process.m, 1.6
+PACKAGES/stimGUI/stimGUI_DisplayData.m, 1.10
+PACKAGES/stimGUI/stimGUI_GetConditions.m, 1.3
+------------
+3. a) We don't seem to be using procParam for anything other than to 
+check processing stream consistency. We've been relying on procParam 
+to transmit parameters from group to session to run, and run to run. 
+But it seems that the processing uses procFunc for everything, not 
+procParam. So we should be copying that instead. 
+b) Ask user if they want to keep the old procParam from the new file
+or copy the procParam from the previous file. In the second case, you 
+should delete procResult because user needs to recalculate it.
+Commit Note:
+"a) It is procFunc which is actually used to do processing and setting of
+the ProcessOpt GUI parameters. Created wrapper structure for input 
+processing parameters called procInput which contains both procParam and 
+procFunc. We now copy procInput to individual group nodes. b) David and Jay
+created checkbox called 'Copy Options' which when checked allows the user to 
+reuse processing options from one nirs file to another rather than 
+defaulting the individual files processing options. It was decided that this 
+is a better solution than asking the user each time they change current file 
+whether they want to reuse current options."
+Date: 03/25/11
+Files: 10
+PACKAGES/EasyNIRS/EasyNIRS.fig, 1.23
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.45
+PACKAGES/EasyNIRS/EasyNIRS_plotCurrentFig.m, 1.3
+PACKAGES/EasyNIRS/checkGrpProcParamValidity.m, 1.3
+PACKAGES/EasyNIRS/loadCurrNIRSFile.m, 1.6
+PACKAGES/EasyNIRS/loadNIRS2hmr.m, 1.5
+PACKAGES/EasyNIRS/Processing/EasyNIRS_Process.m, 1.7
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt.m, 1.6
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.6
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Update.m, 1.2
+-----------
+4. Make dodAvg plotting work (for Nadege's work).
+Commit Note:
+"a) Made display of dodAvg work; b) Fixed display of mutiple wavelengths
+for dod and dodAvg work; c) Fixed some errors with plotProbe to make it 
+work for dodAvg; d) Fixed condition popup menu being reset to the 
+first condition whenever a new file is selected in listbox files."
+Date: 04/15/11
+Files: 6
+plotProbe.m, 1.11
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.46
+PACKAGES/EasyNIRS/EasyNIRS_CheckPlotButtons.m, 1.13
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.18
+PACKAGES/EasyNIRS/loadCurrNIRSFile.m, 1.9
+PACKAGES/EasyNIRS/loadNIRS2hmr.m, 1.6
+
+
+*** V0.9.2
+======
+1. Feature to export mean dcAvg responce to a text file. (Originally 
+done for Theresa Wilcox).
+Commit Note:
+"*** V0.9.2 - Feature to export mean dcAvg responce to a text file. (Originally 
+done for Theresa Wilcox). Also modified the menu Reset File feature to delete
+groupResults.mat file."
+Date: 04/22/11
+Files: 3
+PACKAGES/EasyNIRS/EasyNIRS.fig 1.24
+PACKAGES/EasyNIRS/EasyNIRS.m 1.47
+PACKAGES/EasyNIRS/EasyNIRS_MeanResponce.m 1.1
+PACKAGES/EasyNIRS/loadNIRS2hmr.m 1.7
+-----------
+2. John Spencer encountered a problem with running out of memory. 
+He has many subjects with large data. 
+Commit Note:
+"EasyNIRS was running our of memory because all the procResult 
+data for all runs is in memory all at once. If the time course is long
+and there are many channels, then dc and dod. This is procResult data specific 
+to runs. The solution is to store run data in the corresponding .nirs files 
+and have only the procResult for the current listboxFiles selection loaded
+in memory at any one time."
+Date: 04/22/11
+files: 9
+PACKAGES/EasyNIRS/EasyNIRS.m 1.48
+PACKAGES/EasyNIRS/EasyNIRS_CheckPlotButtons.m 1.14
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m 1.19
+PACKAGES/EasyNIRS/EasyNIRS_plotAxesSDG.m 1.5
+PACKAGES/EasyNIRS/loadCurrNIRSFile.m 1.10
+PACKAGES/EasyNIRS/loadNIRS2hmr.m 1.8
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m 1.3
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m 1.7
+PACKAGES/stimGUI/stimGUI_GetConditions.m 1.4
+-----------
+3. For OD display, when selecting both wavelengths, the colors and line style 
+are wrong. The data for the second wavelength belonging to the same channel 
+should be the same color as the channel but dashed. Also OD average std error
+doesn't work.
+Commit Note:
+"Modified code for displaying dod (OD) and dodAvg (OD average) for multiple 
+wavelengths. Also fixed standard error display for dodAvg."
+Date: 04/28/11
+files: 1
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m 1.20
+-----------
+4. For OD display, when selecting both wavelengths, the colors and line style 
+are wrong. The data for the second wavelength belonging to the same channel 
+should be the same color as the channel but dashed. Also OD average std error
+doesn't work.
+Commit Note:
+"Last commit for displaying multiple wavelengths for OD, OD average and raw 
+data wasn't quite correct. This fixes last commit's bugs."
+Date: 04/28/11
+files: 2
+PACKAGES/EasyNIRS/EasyNIRS.m 1.49
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m 1.21
+----------
+5. a) Give user option to save pocessOpt.cfg file into any name they want 
+as long as it has .cfg ext; b) Nadege issue 4) In plot probe show where zero 
+mark is in HRF plot; c) When ProcessOpt gui is moved to a location on screen, 
+then calculate HRF is selected, the gui moves back (like it was closed
+and reopned).
+Commit Note:
+"Code changes for three separate issues: a) Give user option to save pocessOpt.cfg 
+file into any name they want; b) In plot probe show where the stim mark is; 
+c) ProcessOpt gui doesn't need to be updated when calculate HRF is selected or 
+stim marks change. This prevents the ProcessOpt gui from moving needlessly when 
+it is up."
+Date: 05/03/11
+files: 11
+plotProbe.m, 1.12
+PACKAGES/EasyNIRS/EasyNIRS.fig, 1.25
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.50
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.22
+PACKAGES/EasyNIRS/EasyNIRS_stimDataUpdate.m, 1.6
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOptExport.m 1.1
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.4
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.8
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Update.m, 1.3
+PACKAGES/EasyNIRS/Processing/enStimIncData_varargin.m, 1.2
+PACKAGES/stimGUI/stimGUI.m, 1.14
+------------
+6. Various changes to processing stream and groupResult to make EasyNIRS
+more robust.
+Commit Note:
+"a) Added wait bar to loading of data directory file into a group structure.
+b) Put in error checking for the processing stream. When a developer
+changes or introduces a new proc stream function, they're forced to also
+register it in processOptFuncReg.m  - a matlab structure against which we 
+can error check a processOpt config file. (This is separate from than checking 
+for syntax which the parser should do.) If the loaded config file doesn't pass 
+the error check then inform user what's wrong and don't load the new processing
+stream. Instead Keep the old one. c) Modified loading of procInput to first try 
+getting it from groupRasults.mat instead of config file, and if there's none there 
+or there's an error, then try loading procInput from a default config file. That 
+way you're more likely to be compatible with the procInput used to generate the 
+procResult. Also it solves the problem of retrieving the saved parameters for user 
+data (enStimIncData_varargin). d) Made a change to the processing of an empty 
+processing stream as well as one that has any combination of proc stream functions 
+which connect together via input/output args. That is, it shouldn't be necessary 
+to produce dcAvg or dodAvg for things to work properly. e) Change to allow saving 
+of different procInput parameter values for different .nirs files."
+Date: 06/16/11
+Files: 11
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.57
+PACKAGES/EasyNIRS/EasyNIRS_plotPSD.m, 1.2
+PACKAGES/EasyNIRS/EasyNIRS_stimDataUpdate.m, 1.7
+PACKAGES/EasyNIRS/loadCurrNIRSFile.m, 1.14
+PACKAGES/EasyNIRS/loadNIRS2hmr.m, 1.12
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_ErrorCheck.m, 1.1
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt.m,1.7
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.12
+PACKAGES/EasyNIRS/Processing/processOptFuncReg.m, 1.1
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Update.m, 1.4
+PACKAGES/EasyNIRS/Processing/parseProcessOpt.m, 1.2
+---------------
+7. Matlab generated error when calculating run HRF and processing stream doesn't 
+produce SD in procResult.
+Commit Note:
+"Check that the SD field exists in procResult when calculating run HRF"
+Date: 06/16/11
+Files: 1
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.58
+
+*** v0.9.4 - a) New bug with exporting mean responce. b) Old bug that was fixed months ago and
+reintroduced relating to rounding errors causing tHRF's to be slightly different for 
+different subjects in a group when calculating HRF. c) Error check and fix when s has 
+different number of columns for different group members. d) Bug when number of 
+conditions in config file is less than number of columns.
+Commit Note:
+"a) Fixed bug with exporting mean responce. b) Fixed old bug that was fixed months ago 
+and reintroduced relating to rounding errors causing tHRF's to be slightly different for 
+different subjects in a group when calculating HRF. c) Error check and fix when s has 
+different number of columns for different group members. d) Fixed bug when number of 
+conditions in config file is less than number of columns. e) Init hmr.procInput properly."
+Date: 06/21/11
+Files: 9
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.59
+PACKAGES/EasyNIRS/EasyNIRS_checkNIRSacrossFiles.m, 1.1    (renamed from PACKAGES/EasyNIRS/EasyNIRS_checkSDacrossFiles.m)
+PACKAGES/EasyNIRS/loadNIRS2hmr.m, 1.13
+PACKAGES/SDgui/sd_file/sd_file_save.m, 1.9
+PACKAGES/Utils/saveData2nirsfile.m, 1.1    (renamed from PACKAGES/SDgui/sd_file/sd_file_save2nirs.m)
+PACKAGES/stimGUI/condSave.m, 1.2
+PACKAGES/stimGUI/stimGUI.m, 1.15
+PACKAGES/stimGUI/stimGUI_DisplayData_StimCallback.m, 1.7
+PACKAGES/stimGUI/stimGUI_GetConditions.m, 1.5
+
+======
+
+*** v0.9.4.1 - Last commit from a linux machine caused a fluke - invisible characters (newline or carriage return) to be introduced into the file when checking out the file in Windows using Turtle CVS. Got rid of them and re-commiting the file from Windows to see if we can get it bacvk on track.
+Commit Note:
+"Last commit from a linux machine caused a fluke - invisible characters (newline or carriage return) to be introduced into the file when checking out the file in Windows using Turtle CVS. Got rid of them and re-commiting the file from Windows to see if we can get it bacvk on track.
+Date: 06/21/11
+Files: 1
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.60
+-------------
+*** v0.9.4.2 - Fixed type in stim.CondNames introduced with last commit.
+Commit Note:
+"Fixed type in stim.CondNames introduced with last commit."
+Date: 06/22/11
+Files: 2
+PACKAGES/stimGUI/stimGUI.m, 1.16
+PACKAGES/stimGUI/stimGUI_DisplayData_StimCallback.m, 1.8
+-------------
+*** v0.9.4.3 - a) Initialize hmr.fileChanged at init time. b) Modified error criteria for variable number argument functions in processing stream.
+Commit Note:
+"a) Initialize hmr.fileChanged at init time. b) Modified error criteria for variable number argument functions in processing stream."
+Date: 07/15/11
+Files: 2
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.61,
+PACKAGES/EasyNIRS/EasyNIRS_ProcessOpt_ErrorCheck.m, 1.2,
+--------------
+*** v0.9.4.4 - Processing stream functions with variable length arg list not passing error check even when 
+there's no error. 
+Commit Note:
+"Another fix to processing stream error checking related to variable length arguments"
+Date: Jul 18 2011
+Files: 1
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_ErrorCheck.m, 1.3
+--------------
+*** v0.9.4.5 - Getting matlab error when 's' variable missing from .nirs file.
+Commit Note:
+"Added error checking earlier that creates the 's' variable if it's missing in the .nirs files."
+Date: Jul 19, 2011
+Files: 1
+PACKAGES/EasyNIRS/EasyNIRS_NIRSsignalProcessEnable.m, 1.2
+--------------
+*** v0.9.5 - Added comments separating functions for readability. 
+Commit Note:
+"Added comments separating functions for readability."
+Date: Jul 24, 2011
+Files: 1
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.62
+
+=============
+
+*** v0.9.5.1 - Moved procInput and userdata for each run from group to corresponding
+.nirs file. All data for runs is now stored in the .nirs file
+Commit Note:
+"Moved procInput and userdata for each run from group to corresponding
+.nirs file. All data for runs is now stored in the .nirs file"
+Date: Jul 24, 2011
+Files Changed: 10
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.62
+PACKAGES/EasyNIRS/initRunData.m, 1.1
+PACKAGES/EasyNIRS/EasyNIRS_saveUserDataToCurrRun.m, 1.2
+PACKAGES/EasyNIRS/EasyNIRS_saveUserDataToGroup.m, 1.2
+PACKAGES/EasyNIRS/checkGrpProcParamValidity.m, 1.3
+PACKAGES/EasyNIRS/loadCurrNIRSFile.m, 1.15
+PACKAGES/EasyNIRS/loadNIRS2hmr.m, 1.14
+PACKAGES/EasyNIRS/loadRun.m, 1.1
+PACKAGES/EasyNIRS/Processing/EasyNIRS_Process.m, 1.10
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.13
+Files Removed: 1
+PACKAGES/EasyNIRS/saveProcResult.m
+-------------
+*** v0.9.5.2 - Modified a utility for generating simulated group of 
+.nirs files based on an actual .nirs file. 
+Commit Note:
+"Modified a utility for generating simulated group of 
+.nirs files based on an actual .nirs file"
+Date: Jul 24, 2011
+Files Changed: 3
+PACKAGES/Utils/genNIRSGroupData.m, 1.1
+PACKAGES/Utils/genNIRSSubjData.m, 1.1
+PACKAGES/Utils/genStimMarks.m, 1.1
+Files Removed: 1
+-------------
+*** v0.9.5.3 - Forgot to initialize SD.MeasListAct if it doesn't exist in .nirs file.
+Commit Note:
+"Forgot to initialize SD.MeasListAct if it doesn't exist in .nirs file."
+Date: Jul 24, 2011
+Files Changed: 1
+PACKAGES/EasyNIRS/loadRun.m, 1.2
+------------
+*** v0.9.5.4 - Waitbar doesn't go away after EasyNIRS finishes initializing.
+Commit Note:
+"Added line to close waitbar after loading .nirs file data." 
+Date: Jul 28, 2011
+Files Changed: 1
+PACKAGES/EasyNIRS/initRunData.m, 1.2
+------------
+*** v0.9.5.5 - Wrong version shown if file browser cancel button is hit when EasyNIRS
+first comes up. Also matlab error when s vector has bad data or SD structures have 
+different fields. 
+Commit Note:
+"Modified EasyNIRS init procedure to set the displayed version before checking .nirs 
+files. That way if cancel is hit or there's an error in the files EasyNIRS will still 
+come up with the correct version. Also added more detailed error checking of .nirs 
+files; if there are unfixable errors, display an error message and don't load the 
+data directory. Lastly, when initializing, disable gui objects and enable them only 
+when .nirs files are checked for errors. That way if the data directory isn't loaded 
+for the above-mentioned reasons, the user isn't able to do anything with the gui which 
+generates meaningless and confusing matlab errors." 
+Date: Aug 02, 2011
+Files Changed: 7
+PACKAGES/EasyNIRS/EasyNIRS.fig,1.26
+PACKAGES/EasyNIRS/EasyNIRS.m,1.64
+PACKAGES/EasyNIRS/EasyNIRS_AxesSDG_buttondown.m,1.3
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m,1.25
+PACKAGES/EasyNIRS/EasyNIRS_NIRSsignalProcessEnable.m,1.4
+PACKAGES/EasyNIRS/EasyNIRS_checkNIRSacrossFiles.m,1.3
+PACKAGES/EasyNIRS/EasyNIRS_sdgToggleLines.m,1.3
+-------------
+*** v0.9.5.6 - 
+Commit Note:
+"added AMPthresh
+fixed STDEVthresh to use std foreach channel rather than using the std from the channel with the largest std
+worked on the help section to be useful for EasyNIRS GUI use"
+Date: Aug 04, 2011
+Files Changed: 1
+hmrMotionArtifact.m, 1.6 
+-------------
+*** v0.9.5.7 - 
+Commit Note:
+"initial versions"
+Date: Aug 02, 2011
+Files Changed: 3
+PACKAGES/EasyNIRS/Processing/enAdaptiveFilteringSS.m, 1.1
+PACKAGES/EasyNIRS/Processing/enCrossCorrelation.m, 1.1
+PACKAGES/EasyNIRS/Processing/enCrossCorrelation_result.m, 1.1
+-------------
+*** v0.9.5.8 - 
+Commit Note:
+"added 2 functions and modified another"
+Date: Aug 04, 2011
+Files Changed: 1
+PACKAGES/EasyNIRS/Processing/processOptFuncReg.m, 1.2 
+-------------
+*** v0.9.5.9 - 
+Commit Note:
+"modified the help to work with EasyNIRS GUI  "
+Date: Aug 04, 2011
+Files Changed: 1
+PACKAGES/EasyNIRS/Processing/enPruneChannels.m, 1.6
+-------------
+*** v0.9.5.10 - Deleting processOpt.cfg doesn't get rid of hmrMotionArtifact 
+error when EsayNIRS loads new data directory.
+Commit Note:
+"Change to reflect the new hmrMotionArtifact."
+Date: Aug 04, 2011
+Files Changed: 1
+PACKAGES/EasyNIRS/Processing/processOpt.m, 1.9
+-------------
+*** v0.9.5.11 - Right now we treat manually pruning channels and displaying
+channel data as the same thing and I'm not clear why. They should be 
+two independent functions. 
+Commit Note:
+"Change to allow manual pruning of channels without hiding channel data
+and vice versa. When right clicking on a channel it allows you to view or
+not view channel data without pruning it. Left click as before allows
+you to prune manually but doesn't control making data visible or not."
+Date: Aug 04, 2011
+Files Changed: 4
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.26
+PACKAGES/EasyNIRS/EasyNIRS_plotAxesSDG.m, 1.7
+PACKAGES/EasyNIRS/EasyNIRS_sdgToggleLines.m, 1.4
+PACKAGES/EasyNIRS/loadRun.m, 1.3
+-------------
+*** v0.9.6 - a) Plot probe not showing pruned channels correctly. b) Also 
+getting matlab errors during EasyNIRS .nirs files error check. 
+Commit Note: 
+"a) Modified code to distinquish between manually pruned channels, 
+automatically pruned channels both at the run level and group 
+average pass at the subjet level. b) Fixed incorrect comparison of 
+SD structures. Got rid of SDo assignment statement which isn't used 
+and caused problems. c) Update EasyNIRS.m with new version."
+Date: Aug 24, 2011
+Files Changed: 1
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.5
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.65
+PACKAGES/EasyNIRS/EasyNIRS_checkNIRSacrossFiles.m, 1.4
+-------------
+*** v0.9.6.1 - Need to be have stim labels not tied to particular s matrix
+columns and be specific to individual files. Also allow for the deletion
+of s matrix columns with no stims.
+Commit Note: 
+"Changes to allow stim labels to not tied to particular s matrix
+columns and be specific to individual files. Also allow for the deletion
+of s matrix columns with no stims."
+Date: Aug 31, 2011
+Files Changed: 36
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.65
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.27
+PACKAGES/EasyNIRS/EasyNIRS_stimCondInit.m, 1.1
+PACKAGES/EasyNIRS/EasyNIRS_checkNIRSacrossFiles.m, 1.5
+PACKAGES/EasyNIRS/EasyNIRS_saveUserDataToGroup.m, 1.3
+PACKAGES/EasyNIRS/checkConditions.m, 1.1
+PACKAGES/EasyNIRS/EasyNIRS_stimDataUpdate.m, 1.8
+PACKAGES/EasyNIRS/loadGroup.m, 1.1
+PACKAGES/EasyNIRS/initRunData.m, 1.3
+PACKAGES/EasyNIRS/loadCurrNIRSFile.m, 1.16
+PACKAGES/EasyNIRS/loadNIRS2hmr.m, 1.16
+PACKAGES/EasyNIRS/popupmenuCondition_SetStrings.m, 1.1
+PACKAGES/EasyNIRS/saveRunSelect.m, 1.1
+PACKAGES/EasyNIRS/loadRun.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.6
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.14
+PACKAGES/EasyNIRS/Processing/processOpt_default.cfg, 1.6
+PACKAGES/Utils/genStimMatrix.m, 1.1
+PACKAGES/Utils/upgradeNIRSDir.m, 1.1
+PACKAGES/Utils/genStimMarks.m, 1.2
+PACKAGES/stimGUI/condAssignLabel.m, 1.1
+PACKAGES/stimGUI/condDeleteEmpty.m, 1.1
+PACKAGES/stimGUI/condAddEdit.m, 1.2
+PACKAGES/stimGUI/condMakeNewTbl.m, 1.1
+PACKAGES/stimGUI/condSave.m, 1.3
+PACKAGES/stimGUI/condSort.m, 1.2
+PACKAGES/stimGUI/stimGUI.fig, 1.12
+PACKAGES/stimGUI/stimGUI.m, 1.15
+PACKAGES/stimGUI/stimGUI_AddEditDelete.m, 1.6
+PACKAGES/stimGUI/stimGUI_DisplayData.m, 1.12
+PACKAGES/stimGUI/stimGUI_DisplayData_StimCallback.m, 1.9
+PACKAGES/stimGUI/stimGUI_GetFileCond.m, 1.1
+PACKAGES/stimGUI/stimGUI_GetConditions.m, 1.6
+PACKAGES/stimGUI/stimGUI_MakeConditions.m, 1.1
+PACKAGES/stimGUI/stimGUI_Save_Callback.m, 1.1
+PACKAGES/stimGUI/stimGUI_reset.m, 1.1
+-------------
+*** v0.9.6.3 - Misc changes a) Fix really slow initialization. 
+b) Add ability to stop HRF calculation in the middle of processing. 
+c) Fix saving HRF for group to image file. d) Save plot probe images 
+to jpeg.
+Commit Note: "Misc changes a) Fixed really slow initialization. b) Added 
+ability to stop HRF calculation in the middle of processing. c) Fixed 
+saving HRF for group and subject to jpeg image file. d) Added ability to 
+save plot probe to jpeg image file."
+Date: Sept 23, 2011
+Files Changed: 10
+plotProbe.m, 1.13
+PACKAGES/EasyNIRS/EasyNIRS.fig, 1.27
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.67
+PACKAGES/EasyNIRS/EasyNIRS_AxesSDG_buttondown.m, 1.4
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.28
+PACKAGES/EasyNIRS/EasyNIRS_plotAxesSDG.m, 1.8
+PACKAGES/EasyNIRS/EasyNIRS_plotCurrentFig.m, 1.4
+PACKAGES/EasyNIRS/EasyNIRS_sdgToggleLines.m, 1.5
+PACKAGES/EasyNIRS/loadGroup.m, 1.2
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.7
+-------------
+*** v0.9.6.5 - Add menu item under Tools to open procStreamGUI editor. Also 
+force user to choose a processing stream file if there is no procInput 
+in the saved in group. 
+Commit Note: "Added menu item under Tools which opens procStreamGUI editor. 
+Also user is now forced to choose a processing stream file if there is 
+no procInput in the saved in group."
+Date: Sept 29, 2011
+Files Changed: 4
+PACKAGES/EasyNIRS/EasyNIRS.fig, 1.28
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.68
+PACKAGES/EasyNIRS/EasyNIRS_sdgToggleLines.m, 1.6
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.15
+--------------
+*** v0.9.6.6 - HRF Calculation cancel button uses assert to interrupt 
+processing but also hides real errors and crashes by catching the 
+error signal during processing. Need to distinguish between the 
+user generated interrupt and interrupt due to error.
+Commit Note: "a) Added a check of error type to the catch block to distinguish 
+between different types of signals that caused the catch to trigger. b) Cleaned 
+up listbosFiles_Callback; it was doing some unnecesary file data loading and 
+unnecessary run index retrieval. c) Changed utility which generate simulated 
+.nirs files from a template to make it easier to use. d) Got rid of 
+Untitled1_Callback function."
+Date: Oct 21, 2011
+Files Changed: 3
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.69
+PACKAGES/Utils/genNIRSGroupData.m, 1.2
+PACKAGES/Utils/genNIRSSubjData.m, 1.2
+--------------
+*** v0.9.6.7 - Manually excluded stims are still included in run HRF calculations.
+Add capability to allow exclusion of stim within manually identified motion
+artifacts.
+Commit Note: "Added capability to allow exclusion of stim within manually 
+identified motion artifacts (added another instance of enStimRejection to 
+allow user to exclude manually excluded stims) Collapsed timeExclude and 
+timeEcludeVec into one variable which is a struct. Got rid of hmr.tInc.  
+Cleaned up code which displays excusion patches and stim marks."
+Date: Oct 21, 2011
+Files Changed: 9
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.70
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.29
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData_PatchCallback.m, 1.5
+PACKAGES/EasyNIRS/loadRun.m, 1.5
+PACKAGES/EasyNIRS/saveRunSelect.m, 1.2
+PACKAGES/EasyNIRS/Processing/EasyNIRS_Process.m, 1.11
+PACKAGES/EasyNIRS/Processing/enStimRejection.m, 1.4
+PACKAGES/EasyNIRS/Processing/processOpt.m, 1.10
+PACKAGES/EasyNIRS/Processing/processOptFuncReg.m, 1.6
+---------------
+*** v0.9.6.8 - a) Fix really slow and unnecessary initialization of .nirs files. 
+Also change the way group runs are initialized with procInput. First don't 
+automatically initialize .nirs files with any new fields including procInput. 
+Write procInput and procResult out to .nirs files only when calculating 
+HRF. Write run procInput to memory, that is store it in the group data
+structure.  b) ProcessOpt gui should expand with the number of options.
+c) Loading of proc stream file should use absolute pathname - relative 
+paths don't work with executables. Also same goes for mean responce 
+export. d) David suggests if loading procInput from config file, give 
+user option to move groupResult.mat to different filename, thus saving 
+it. 
+Commit Note: "a) Fixed really slow and unnecessary initialization of .nirs files. 
+Also changed the way group runs are initialized with procInput. No longer 
+automatically initializing .nirs files with any new fields including procInput. 
+Write run procInput to memory, that is store it in the group data structure and 
+save procInput to .nirs files only when calculating HRF.  b) Modified ProcessOpt 
+gui to expand with the number of options. c) Loading of proc stream file should 
+use absolute pathname - relative paths don't work with executables. Also same 
+goes for mean responce export. d) David suggests if loading procInput from config 
+file, give user option to move groupResult.mat to different filename, thus saving 
+it. e) Added automatic updating of procInput functions with variable length param 
+list, as well as implementing a suggestion (parseProcessFuncArgs) to handle 
+extracting input arguments in a generic way for functions with variable length 
+param lists. f) Automatic updating of procInput when userdata columns are added, 
+deleted or renamed in stimGUI. g) Related to initialization: fixed errors in menu 
+reset of .nirs file. h) Fixed error in processing of proc stream for runs, where 
+procResult isn't initialized causing old results to be displayed (sunch as prune 
+channels results) when displaying new data."
+Date: Nov 1, 2011
+Files Changed: 19
+PACKAGES/EasyNIRS/loadDataFromRun.m, 1.1
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.71
+PACKAGES/EasyNIRS/EasyNIRS_saveUserDataToCurrRun.m, 1.3
+PACKAGES/EasyNIRS/EasyNIRS_saveUserDataToGroup.m, 1.4
+PACKAGES/EasyNIRS/EasyNIRS_stimDataUpdate.m, 1.9
+PACKAGES/EasyNIRS/loadCurrNIRSFile.m, 1.17
+PACKAGES/EasyNIRS/saveDataToRun.m, 1.1
+PACKAGES/EasyNIRS/loadGroup.m, 1.3
+PACKAGES/EasyNIRS/loadNIRS2hmr.m, 1.16
+PACKAGES/EasyNIRS/loadRun.m, 1.6
+PACKAGES/EasyNIRS/saveRunSelect.m, 1.3
+PACKAGES/EasyNIRS/Processing/EasyNIRS_Process.m, 1.12
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt.fig, 1.2
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt.m, 1.8
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.16
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Update.m, 1.5
+PACKAGES/EasyNIRS/Processing/parseProcessFuncArgs.m, 1.1
+PACKAGES/stimGUI/stimGUI_updateUserData.m, 1.1
+PACKAGES/stimGUI/stimGUI.m, 1.18
+
+----------------
+
+*** v0.9.7 
+
+Toggling stim doesn't display stim that have been excluded. 
+Commit Note: "Fixed stim toggle not displaying excluded stims."
+Date: Nov 2, 2011
+Files Changed: 2
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.72
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.30
+----------------
+*** v0.9.7.1 
+
+Priority 1 -- pcaFilter result button in wrong place on ProcessOpt GUI
+Priority 2 -- Toggling stims to exclude doesn't display the stim.
+Priority 1 -- Change emStimReject to accept tIncAuto and tIncMan rather than 
+have 2 separate calls in the processing stream to handle each type of 
+stim.
+Priority 2 - Change copyOptions to be checked by default at init time. Also
+fix the way copyOptions works when box is checked. That is, proc params 
+should not be propagated from file to file when simply selecting files in 
+listboxFiles and copyOptions is checked. This is the way it works now but 
+it's not right. We should only be propagating/overwriting proc params from 
+file to file when we calculate HRF and copyOptions is checked. 
+Priority 5 -- Add separate version file so that version number isn't tied to 
+EasyNIRS.m
+
+Commit Note: "a) Fixed pcaFilter result button being in wrong place in ProcessOpt GUI;
+b) Fixed stim toggle not displaying excluded stims; c) Changed emStimReject to accept 
+tIncAuto and tIncMan rather than have 2 separate calls in the processing stream to 
+handle each type of stim; d) Changed copyOptions to be checked by default at init time 
+and fixed the way proc params are copied from file to file when copyOptions is checked
+to only do this when calculating HRF; e)  Added separate version file so that version 
+number isn't tied to EasyNIRS.m; f) Fixed error with s0 not being used correctly to 
+recover original s matrix."
+Date: Nov 3, 2011
+Files Changed: 10
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.1
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.73
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.31
+PACKAGES/EasyNIRS/loadGroup.m, 1.4
+PACKAGES/EasyNIRS/loadRun.m, 1.7
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt.m, 1.10
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.17
+PACKAGES/EasyNIRS/Processing/enStimRejection.m, 1.5
+PACKAGES/EasyNIRS/Processing/processOpt.m, 1.11
+PACKAGES/EasyNIRS/Processing/processOptFuncReg.m, 1.7
+-----------------
+*** v0.9.7.2
+
+This is the first part of 
+
+Priority 0: Calculate HRF popup menu shouldn't disappear when finished with 
+processing. Instead an indication that the current group has be b) 
+When changes to group options have been made always keep the calculate 
+HRF button visible, replace the behavior by adding a '*' to 'options*' 
+when the options have changed but not been re-calculated. 
+Commit Note: "Part 1 of changes to make Calculate HRF popupmenu show whether
+processing input is consistent with processing output. Previously the popup 
+menu disappeared when processing was done. This is no longer the case; now 
+it is always there. Made this work for processing stream only at this point.
+Need to do something similar for other editable input such as SD, s, and 
+tIncMan. Also reversed the options order in Calc HRF popup menu from 
+group, session, run."
+Date: Nov 7, 2011
+Files Changed: 16
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.74
+PACKAGES/EasyNIRS/EasyNIRS_NIRSsignalProcessUpdate.m, 1.1
+PACKAGES/EasyNIRS/EasyNIRS_NIRSsignalProcessEnable.m, 1.4
+PACKAGES/EasyNIRS/initProcInputStruct.m, 1.1
+PACKAGES/EasyNIRS/EasyNIRS_stimDataUpdate.m, 1.9
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.1
+PACKAGES/EasyNIRS/checkGrpProcParamValidity.m, 1.5
+PACKAGES/EasyNIRS/loadGroup.m, 1.4
+PACKAGES/EasyNIRS/saveDataToRun.m, 1.1
+PACKAGES/EasyNIRS/Processing/EasyNIRS_Process.m, 1.13
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt.m, 1.10
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.18
+PACKAGES/Utils/comp_struct.m, 1.1
+PACKAGES/Utils/data_diff.m, 1.2
+PACKAGES/stimGUI/stimGUI.m, 1.18
+PACKAGES/stimGUI/stimGUI_DisplayData.m, 1.12
+
+-----------------------
+*** v0.9.7.4
+
+Commit Note: "a) Changed the way copyOptions works after talking with David about
+what copyOptions means. Created separate variable called hmr.procInput_copyOptions. 
+We don't overwrite current run's procInput as you go from file to file preserving 
+the meaning of hmr.procInput's as the current run's procInput. Whenever 
+the user enables copyOptions, the current run's procInput is remembered in 
+hmr.procInput_copyOptions. Toggling back to disabling and then enabling copyOptions, 
+first updates ProcessOpt GUI to the current run's options (letting you see them) 
+and then changes hmr.procInput_copyOptions to the new run's procInput. Calculating 
+HRF while copyOptions is enabled grabs procInput from hmr.procInput_copyOptions 
+instead of hmr.procInput. b) Fixed matlab error in data_diff when clicking the 
+save button."
+Date: Nov 8, 2011
+Files Changed: 5
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.76
+PACKAGES/EasyNIRS/EasyNIRS_NIRSsignalProcessUpdate.m, 1.2
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt.m, 1.12
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.20
+PACKAGES/Utils/data_diff.m, 1.4
+
+----------------------------
+
+*** v0.9.7.5
+
+Commit Note: "a) Fixed error in copyOptions when doing run HRF processing. 
+changeFlag for hmr.procInput_copyOptions wasn't getting set to 0.
+b) Changed the way stims are displayed when manually toggled and manually 
+excluded via patches. David asked to make it a simple scheme where they are either
+dashed or solid lines regardless of whether the stims were actually excluded or 
+included HRF processing. c) Fixed another matlab error (in addition to last one)
+in data_diff when clicking the save button."
+Date: Nov 8, 2011
+Files Changed: 5
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.77
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.33
+PACKAGES/EasyNIRS/Processing/enStimRejection.m, 1.6
+PACKAGES/Utils/comp_struct.m, 1.3
+PACKAGES/Utils/data_diff.m, 1.5
+
+
+----------------------
+*** v0.9.7.6
+
+Commit Note: "When copyOptions are used and calculating HRF for a run, the 
+group and subject changeFlag should be set to 1 to indicate that the run's
+group and subject procInputs are now inconsistent with their procResults and 
+need to be recalculated."
+Date: Nov 8, 2011
+Files Changed: 2
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.78
+PACKAGES/EasyNIRS/EasyNIRS_NIRSsignalProcessUpdate.m, 1.3
+
+----------------
+*** v0.9.7.7
+
+Commit Note: "More copyOptions tweaks: when copyOptions are used and 
+calculating HRF for a run, we set the group and session changeFlag 
+unconditionally which isn't right. Only when the changeFlag is set 
+for hmr.procInput_copyOptions do we set it for group and session. 
+Also fixed updating procInput_copyOptions parameters correctly in 
+EasyNIRS_ProcessOpt and displaying the right Calc HRF popup menu."
+Date: Nov 8, 2011
+Files Changed: 2
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.79
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt.m, 1.14
+
+----------------
+*** v0.9.8
+
+Commit Note: "Changed EasyNIRS name on GUI window to Homer2_UI and made save 
+button disappear when HRF processing is done. More work needs to be done on 
+'SD', 's', and 'tIncMan' as far as how they are saved. Should be made part of 
+procInput. Also added initialization of copyOptions when loading new proc 
+stream config file and when loading a run in loadRun."
+file some more additions to "
+Date: Nov 9, 2011
+Files Changed: 1
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.80
+PACKAGES/EasyNIRS/loadRun.m, 1.10
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.21
+
+------------------
+
+*** v0.9.8.1
+
+Commit Note: "Fixed some errors found during prep for NIRS class. a) Fixed wrong 
+output dimensions in deconvolution function when returning all zeros. b) Fixed 
+error in HRF processing for session when tHRF's are not all same in the group 
+subjects. While tHRF is made to be same from subject to subject, the dimensions 
+of dcAvg are not which created problems - so made dcAvg's also same. Note that 
+in the future we should flag different tHRF's as an error or at least a warning. 
+c) Fixed assumption in output display when there's only one channel that you can 
+distinguish between OD and Conc by the number od dimension in d. Bas assumption.
+All you have to do is check the plot flag. d) Again tried to clean up 
+EasyNIRS_ProcessOpt_Init and make it crash proof - hopefully this time it 
+worked. e) Tweaked copyOptions come more: issue is to make it work correctly for 
+all cases: menuLoadProcessOpt, menu reset, listboxFiles, etc. I think it works 
+this time."
+Date: Nov 11, 2011
+Files Changed: 5
+hmrDeconvTB_3rd.m, 1.4
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.81
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.34
+PACKAGES/EasyNIRS/loadRun.m, 1.11
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.23
+
+------------------
+
+*** v0.9.8.2
+
+Commit Note: "Greatly simplified loading of group data to memory at startup.
+Also now procInput is initialized as a struct instead of empty. This fixes 
+several bugs related to overly complicated initialization and empty procInput. 
+Also fixed an error checking bug of SD data across files. Lastly changed error 
+checking in EasyNIRS_Process.m by using the common function 
+EasyNIRS_ProcessOpt_ErrorCheck."
+Date: Nov 29, 2011
+Files Changed: 12
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.84
+PACKAGES/EasyNIRS/checkGrpProcParamValidity.m, 1.8
+PACKAGES/EasyNIRS/initProcInputRun.m, 1.1
+PACKAGES/EasyNIRS/initProcInputStruct.m, 1.3
+PACKAGES/EasyNIRS/loadGroup.m, 1.8
+PACKAGES/EasyNIRS/loadNIRS2hmr.m, 1.17
+PACKAGES/EasyNIRS/overwriteProcInputRun.m, 1.1
+PACKAGES/EasyNIRS/Processing/EasyNIRS_Process.m, 1.17
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt.m, 1.15
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_ErrorCheck.m, 1.5
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.26
+PACKAGES/EasyNIRS/Processing/parseProcessOpt.m, 1.5
+
+------------------
+
+*** v0.9.8.3
+
+Commit Note: "a) Refined loadGroup again. Although it was simplified last time it 
+still wasn't quite correct. This time I move the copying of the procParams and procResult 
+from previous group to current until after the subject data had been copied. Also 
+no need to copy run data - run data is loaded into current group from .nirs files not 
+from groupResults. b) Also Marking the show HRF checkboxes with ** in addtion to the 
+Calc HRF popup menu to reflect inconsistency between procInput and procResult. c)
+Lastly, got rid of edge lines from time exclude patches and changed slightly the 
+arguments displayTimeExcludePatches takes."
+Date: Dec 1, 2011
+Files Changed: 7
+PACKAGES/EasyNIRS/EasyNIRS.fig, 1.28
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.84
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.35
+PACKAGES/EasyNIRS/EasyNIRS_NIRSsignalProcessUpdate.m, 1.4
+PACKAGES/EasyNIRS/loadCurrNIRSFile.m, 1.17
+PACKAGES/EasyNIRS/loadGroup.m, 1.8
+PACKAGES/EasyNIRS/loadRun.m, 1.12
+
+
+------------------
+*** v0.9.8.4
+
+Priority 2 -- When setting timeExclude patches manually, if the axes 
+selection goes beyond the time range in the negative direction, patches 
+display incorrectly. 
+Priority 1 -- After running Calc HRF, if you use the stimGUI to change 
+the condition of existing stims to some new condition which doesn't exist 
+currently, you get an error. 
+Priority 5 -- Displaying time exclusion patches make SD channels display 
+thicker.
+Commit Note: "a) Fixed matlab error occuring when changing the condition of 
+an excluded stim to a new condition in the stimGUI after running Calc HRF.
+Recognizing that the size of the s vector can change and not match the size
+of procResult.s, we now sum procResult.s in EasyNIRS_DisplayData instead of
+checking condition by condition. b) Fixed time exclude patches displaying 
+incorrectly when selecting beyond the time range in the negative direction. 
+c) Added feature to allow passing of the renderer type to Homer2_UI, if 
+the automatically selected renderer isn't compatible with the graphics 
+card or host operating system. This should take care of any problems 
+displaying time exclude patches which use the renderer."
+Date: Dec 3, 2011
+Files Changed: 3
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.87
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.38
+PACKAGES/EasyNIRS/timeExcludeRanges.m, 1.3
+
+------------------
+*** v0.9.8.5
+
+Commit Note: "At init time, copy procInput field-by-field rather than 
+overwriting to avoid any backward incompatabilies. We do this in loadGroup
+but not in EasyNIRS_ProcessOpt_Init."
+Date: Dec 7, 2011
+Files Changed: 2
+PACKAGES/EasyNIRS/loadGroup.m, 1.9
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.26
+Files Added: 1
+PACKAGES/EasyNIRS/copyProcInputFieldByField.m, 1.1
+Files Removed: 3 
+PACKAGES/EasyNIRS/overwriteProcInputRun.m
+PACKAGES/EasyNIRS/initProcInputRun.m
+PACKAGES/EasyNIRS/initProcResult.m
+
+-----------------
+*** v0.9.8.6
+
+Priority 1 - Find out what Rob found with proc stream deconvolution crash.
+
+Commit Note: "Backward compatability issue fixed. procInput looked different 
+in prior Homer2_UI versions. Fields in current procInput were being overwritten 
+by earlier version of procInput in groupResults.mat. Solved issue by doing a deep
+struct copy where none of the existing procInput fields get deleted."
+Date: Dec 8, 2011
+Files Changed: 4
+PACKAGES/EasyNIRS/initProcInputStruct.m, 1.4
+PACKAGES/EasyNIRS/loadGroup.m, 1.12
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.28
+PACKAGES/EasyNIRS/Processing/parseProcessOpt.m, 1.6
+Files Added: 1
+PACKAGES/EasyNIRS/copyStructFieldByField.m, 1.1
+Files Removed: 1
+PACKAGES/EasyNIRS/copyProcInputFieldByField.m, 1.1
+
+----------------
+*** v0.9.8.7
+
+Priority 1 - Create mapping between english language and proc stream function
+names. The user friendly names are waht should appear on Process Options gui.
+Find out if matlab supports mouse over which would give brief parameter info 
+in Process Opt Gui and clicking. 
+
+Commit Note: "a) Clean up display of proc stream functions and parameters in 
+the ProcessOpt GUI. Changes to make GUI window expand in the horizanotal direction 
+to not obscure function or parameter names and lines up functions and parameters in 
+left-centered columns. Also added horizontal dividers between parameters to make it 
+clearly visible which parameters belong to which functions; b) Added ability to 
+add user friendly names for proc stream functions to the proc stream config file. 
+Added field funcNameUser to procFunc for this purpose. NOTE: if new style config 
+file has function user name information it is not backwards compatible; i.e., and 
+older version of Homer2_UI (than this one) or EasyNIRS will not handle it properly. 
+c) Added mouse-over feature to allow display of user info when mouse hovers over 
+a function or parameter name in ProcessOpt GUI; d) Lastly, changed names of procFunc 
+fields to be more consistent in meaning. The fields, funcCall, funcCallArgIn, 
+and funcCallArgOut changed to funcName, funcArgIn, and funcArgOut respectively."
+Date: Dec 27, 2011
+Files Changed: 12
+PACKAGES/EasyNIRS/EasyNIRS_saveUserDataToGroup.m, 1.5
+PACKAGES/EasyNIRS/copyStructFieldByField.m, 1.2
+PACKAGES/EasyNIRS/loadGroup.m, 1.13
+PACKAGES/EasyNIRS/Processing/EasyNIRS_Process.m, 1.18
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt.m, 1.16
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOptExport.m, 1.2
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_ErrorCheck.m, 1.6
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.29
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Update.m, 1.6
+PACKAGES/EasyNIRS/Processing/enStimIncData_varargin.m, 1.3
+PACKAGES/EasyNIRS/Processing/parseProcessOpt.m, 1.7
+PACKAGES/EasyNIRS/Processing/procStreamGUI.m, 1.4
+
+
+=============
+*** v0.9.8.8
+
+Priority 1 - Stims excluded through user data table in stimGUI doesn't show 
+stims to be excluded even though it works correctly to actually excude them. 
+This broke when I tried to make the display work for all the different types 
+of excluded stims. 
+
+Commit Note: "Fixed displaying of excluded stims through user data table in 
+stimGUI. The excusion would work but the stims would be displayed as solid
+which is what was fixed."
+Date: Jan 10, 2012
+Files Changed: 3
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.38
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData_PatchCallback.m, 1.7
+PACKAGES/EasyNIRS/Processing/enStimIncData_varargin.m, 1.4
+
+=============
+*** v1.0
+
+Priority 2 -- Create utility to generate processing stream help registry and a 
+parser to display it when mouse hovers over items in ProcessOpt GUI and in 
+procStreamGUI when selecting functions. This should also solve the problem 
+of displaying help in a Homer2_UI binary where the matlab help function can't 
+be used.  
+
+Priority 1 - When a proc stream function doesn't pass error checking because 
+of differences with registry arguments, fix the proc stream by replacing the 
+incorrect version of the function with ther registry one. 
+
+Commit Note: "a) Created utility to generate processing stream help registry 
+b) Created parser to read the help registry and extract different parts of the 
+help - general function description and parameter descriptions - for display 
+in ProcessOpt GUI when mouse hovers over the function and parameters items. 
+c) If there are errors when loading a processing stream, try to fix them by 
+replacing the bad versions of the functions with the correct ones or deleting 
+the function entry if it doesn't exist in the registry.."
+Date: Jan 10, 2012
+
+Files Changed: 14
+hmrBlockAvg.m, 1.9
+hmrIntensity2Conc.m, 1.4
+hmrIntensityNormalized.m, 1.2
+hmrMotionArtifact.m, 1.8
+hmrMotionCorrectPCA.m, 1.2
+PACKAGES/EasyNIRS/copyStructFieldByField.m, 1.3
+PACKAGES/EasyNIRS/Processing/EasyNIRS_Process.m, 1.19
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt.m, 1.17
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_ErrorCheck.m, 1.7
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.30
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Update.m, 1.7
+PACKAGES/EasyNIRS/Processing/enPruneChannels.m, 1.9
+PACKAGES/EasyNIRS/Processing/parseProcessOpt.m, 1.8
+PACKAGES/EasyNIRS/Processing/procStreamGUI.m, 1.5
+
+Files Renamed: 2
+PACKAGES/EasyNIRS/Processing/parseProcessFuncArgs.m, 1.1  to
+  PACKAGES/EasyNIRS/Processing/parseProcessFuncArgsIn.m, 1.1
+PACKAGES/EasyNIRS/Processing/processOptFuncReg.m, 1.12 to 
+  PACKAGES/EasyNIRS/Processing/procStreamReg.m, 1.1
+
+Files Added: 8
+PACKAGES/EasyNIRS/Processing/fixProcStreamErr.m, 1.1
+PACKAGES/EasyNIRS/Processing/funcMatch.m, 1.1
+PACKAGES/EasyNIRS/Processing/parseFuncHelp.m, 1.1
+PACKAGES/EasyNIRS/Processing/parseProcessFuncArgsOut.m, 1.1
+PACKAGES/EasyNIRS/Processing/parseProcStreamHelp.m, 1.1
+PACKAGES/EasyNIRS/Processing/procStreamRegHelp.m, 1.1
+PACKAGES/Utils/genHelpFunc.m, 1.1
+PACKAGES/Utils/genHelpProcStream.m, 1.1
+
+
+==================
+*** v1.0, part2
+
+Commit Note: "This is part of v1.0 but the commit messed up some files. 
+Cvs gets confused when commiting files in dos format (because they were 
+changed on and copied from a windows machine) on a linux platform. 
+First have to change to unix text format using dos2unix."
+Date: Jan 11, 2012
+Files Changed: 7
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt.m, 1.17
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_ErrorCheck.m, 1.7
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.31
+PACKAGES/EasyNIRS/Processing/parseProcessOpt.m, 1.8
+PACKAGES/EasyNIRS/Processing/procStreamReg.m, 1.1
+PACKAGES/Utils/genHelpFunc.m, 1.1
+PACKAGES/Utils/genHelpProcStream.m, 1.1
+
+
+=================
+*** v1.0, part3
+
+Commit Note: "This is part of v1.0: Fixed bug where parser doesn't distinguish 
+between a parameter name which is part of the input and an output parameter of 
+the same name."
+Date: Jan 12, 2012
+Files Changed: 1
+PACKAGES/EasyNIRS/Processing/parseFuncHelp.m, 1.3
+
+=================
+v1.0.2
+
+Commit Note: "Second part of plotProbe overhaul. 
+
+Priority ?? -- Make plotProbe work more efficiently by not redrawing 
+the whole plot and graphics add ons each time graphics controls are 
+used.
+(task created, Mar 23, 2012)
+
+Priority ?? -- Make plotProbe use normalized units rather than pixels.
+(task created, Mar 23, 2012)
+
+Priority 2 -- Add feature to plotProbe to draw vertical markers 
+starting with stim onset at time intervals selectable by user.
+(task created, Mar 23, 2012)
+NOTE: does not yet include an amplitude indicator in the time marker.
+
+Also Created new look and functionality to plotProbe GUI. Added Control 
+Panel where all the existing and future control functions are/will be 
+located. Also added time markers in addition to the stim markers. "
+Date: April 3, 2012
+Files Changed: 13
+plotProbe.m, 1.17
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.91
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_DeleteFcn.m, 1.2
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Init.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.11
+PACKAGES/EasyNIRS/PlotProbe/drawPlotProbeDuplicate.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/drawPlotProbeScale.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/editPlotProbeAxScl_Callback.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeDuplicate_Callback.m, 1.5
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeXdec_Callback.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeXinc_Callback.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeYdec_Callback.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeYinc_Callback.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/radiobuttonShowHiddenMeas_Callback.m, 1.4
+
+Files Added: 7
+PACKAGES/EasyNIRS/PlotProbe/drawPlotProbeControlsPanel.m
+PACKAGES/EasyNIRS/PlotProbe/drawPlotProbeTimeMarkers.m
+PACKAGES/EasyNIRS/PlotProbe/editPlotProbeTimeMarkersInt_Callback.m
+PACKAGES/EasyNIRS/PlotProbe/getSclPanelEditHandle.m
+PACKAGES/EasyNIRS/PlotProbe/plotProbeAndSetProperties.m
+PACKAGES/EasyNIRS/PlotProbe/radiobuttonShowTimeMarkers_Callback.m
+PACKAGES/EasyNIRS/PlotProbe/showHiddenObjs.m
+
+Files Changed and Renamed: 2
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Create.m, 1.1  to
+   PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Session.m, 1.1
+PACKAGES/EasyNIRS/PlotProbe/drawPlotProbeShowHiddenMeasToggle.m, 1.3
+   PACKAGES/EasyNIRS/PlotProbe/drawPlotProbeHiddenMeas.m, 1.1
+
+Files Deleted: 1
+PACKAGES/EasyNIRS/PlotProbe/showHiddenMeas.m, 1.1
+
+=================
+v1.0.3
+
+Commit Note: "This file was committed last time (1.0.1) from 
+Linux but was in dos text format. Used dos2unix to convert it 
+back to linux text format."
+Date: April 4, 2012
+Files Changed: 3
+PACKAGES/EasyNIRS/PlotProbe/radiobuttonShowTimeMarkers_Callback.m, 1.2
+PACKAGES/EasyNIRS/PlotProbe/editPlotProbeTimeMarkersInt_Callback.m, 1.2
+PACKAGES/EasyNIRS/PlotProbe/drawPlotProbeTimeMarkers.m, 1.2
+
+=================
+v1.0.4
+
+Commit Note: "When processing stream output, procResult contains no SD variable, 
+subject responce averaging incorrectly uses the SD.MeasListAct from the last run for 
+all the other runs in the subject. When there's no SD in procResult, each run's 
+SD.MeasListAct should be used."
+Date: April 4, 2012
+Files Changed: 2
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.91
+PACKAGES/EasyNIRS/Processing/EasyNIRS_Process.m, 1.19
+
+==================
+v1.0.5
+
+Commit Note: "Resetting .nirs files after creating new userdata columns and 
+processing, causes mismatch between userdata table which loses all it's added 
+columns and enStimIncData_varargin in procInput.procFunc which kept the new 
+corresponding parameters. What's needed is to run EasyNIRS_saveUserDataToGroup
+to reset enStimIncData_varargin to match userdata"
+Date: April 8, 2012
+Files Changed: 3
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.92
+PACKAGES/EasyNIRS/EasyNIRS_saveUserDataToGroup.m, 1.6
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Update.m, 1.8
+
+
+==================
+v1.0.6
+
+Commit Note: "Added amplitude indicator to plotProbe time markers."
+Date: April 8, 2012
+Files Changed:  18
+plotProbe.m, 1.18
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_DeleteFcn.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Init.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Session.m, 1.2
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.12
+PACKAGES/EasyNIRS/PlotProbe/drawPlotProbeHiddenMeas.m, 1.2
+PACKAGES/EasyNIRS/PlotProbe/drawPlotProbeTimeMarkers.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/editPlotProbeAxScl_Callback.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/editPlotProbeTimeMarkersInt_Callback.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/plotProbeAndSetProperties.m, 1.2
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeDuplicate_Callback.m, 1.6
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeXdec_Callback.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeXinc_Callback.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeYdec_Callback.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeYinc_Callback.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/radiobuttonShowHiddenMeas_Callback.m, 1.5
+PACKAGES/EasyNIRS/PlotProbe/radiobuttonShowTimeMarkers_Callback.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/showHiddenObjs.m, 1.2
+
+Files Added: 2
+PACKAGES/EasyNIRS/PlotProbe/radiobuttonShowAmplitude_Callback.m
+PACKAGES/EasyNIRS/PlotProbe/showAmplitude.m
+
+
+==================
+v1.0.7
+
+Commit Note: "More work done for amplitude indicators in plotProbe time markers."
+Date: April 9, 2012
+Files Changed:  17
+plotProbe.m, 1.19
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Init.m, 1.5
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.13
+PACKAGES/EasyNIRS/PlotProbe/drawPlotProbeTimeMarkers.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/editPlotProbeAxScl_Callback.m, 1.5
+PACKAGES/EasyNIRS/PlotProbe/editPlotProbeTimeMarkersInt_Callback.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/plotProbeAndSetProperties.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeDuplicate_Callback.m, 1.7
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeXdec_Callback.m, 1.5
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeXinc_Callback.m, 1.5
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeYdec_Callback.m, 1.5
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeYinc_Callback.m, 1.5
+PACKAGES/EasyNIRS/PlotProbe/radiobuttonShowAmplitude_Callback.m, 1.2
+PACKAGES/EasyNIRS/PlotProbe/radiobuttonShowHiddenMeas_Callback.m, 1.6
+PACKAGES/EasyNIRS/PlotProbe/radiobuttonShowTimeMarkers_Callback.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/showAmplitude.m, 1.2
+PACKAGES/EasyNIRS/PlotProbe/showHiddenObjs.m, 1.3
+
+Files Added: 1
+PACKAGES/EasyNIRS/PlotProbe/calcAvgAmp.m
+
+
+==================
+v1.0.8
+
+Commit Note: "Added ability to the load and save buttons in procStreamGUI to 
+load from and save to current processing stream in addition to loading from 
+and saving to a file."
+Date: April 11, 2012
+Files Changed:  2
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.33
+PACKAGES/EasyNIRS/Processing/procStreamGUI.m, 1.8
+
+Files Added: 1
+PACKAGES/EasyNIRS/EasyNIRS_CopyOptions.m
+
+
+==================
+v1.0.9
+
+Commit Note: "Fixed bug introduced in last commit for saving and loading 
+processing stream created in procStreamGUI to and from current processing 
+stream. Added ability to initialize with a processing stream not just from 
+a file."
+Date: April 11, 2012
+Files Changed:  1
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt_Init.m, 1.34
+
+===================
+v1.0.10
+
+Commit Note: "Fixed conditions plotting in plotProbe. Condition 
+number for a particular run isn't necessarily the same as the 
+condition number for group or subject (same for subj and group). 
+Was incorrectly using group condition number for run. Now created 
+separate plotCondition_run variable in plotprobe to map from group
+to s column index. Also fixed a mistakenly deleted query of the 
+string property of the scale edit box."
+Date: April 19, 2012
+Files Changed:  4
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Init.m, 1.6
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Session.m, 1.2
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.12
+PACKAGES/EasyNIRS/PlotProbe/editPlotProbeAxScl_Callback.m, 1.5
+
+
+===================
+v1.0.11
+
+Commit Note: "For the purposes of getting the HOMER2 User's Manual
+published and have a coherent version of HOMER2, backed out amplitude
+time markers changes for now - since it was incomplete and takes a bit
+of thinking how to implement correctly. Will return to it shortly."
+Date: April 19, 2012
+Files Changed:  7
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Init.m, 1.7
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Session.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/drawPlotProbeTimeMarkers.m, 1.5
+PACKAGES/EasyNIRS/PlotProbe/plotProbeAndSetProperties.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/pushbuttonPlotProbeDuplicate_Callback.m, 1.9
+PACKAGES/EasyNIRS/PlotProbe/radiobuttonShowTimeMarkers_Callback.m, 1.5
+PACKAGES/EasyNIRS/PlotProbe/showHiddenObjs.m, 1.4
+
+===================
+v1.0.12
+
+Commit Note: "modified code so that OD is baseline zeroed just like Conc."
+Date: April 20, 2012
+Files Changed:  1
+PACKAGES/hmrBlockAvg.m,	1.12
+
+
+===================
+v1.0.13
+
+Commit Note: "Fixed bug when output is all zeros, wrong dimension order:
+time, channels, data type. It is supposed to be time, data type, channels
+as it is when the output isn't all zeros."
+Date: April 20, 2012
+Files Changed:  2
+hmrDeconvTB_SS3rd.m, 1.5
+hmrDeconvTB_SS3rd_Highest.m, 1.2
+
+==================
+v1.0.14
+
+Commit Note: 
+"
+Added display of and ability to change time markers 
+amplitude. 
+
+Fixed a problem with plotProbe where some data would 
+is displayed disproportionally large and off the scale. 
+This happened because of a fix a while back which addressed
+a problem with data drifting when scaling up or down. But 
+fixing that introduced this current bug. Came up with another 
+solution with no side eFfects.
+
+Cleaned up plotProbe a bit more by deleting large sections 
+of commented out code. 
+
+Fixed a problem when changing data sets (using the Change 
+Directory File Menu option) if plotProbe GUI is up, then it 
+won't be closed after the new data set is loaded.
+"
+Date: April 26, 2012
+Files Changed:  11
+plotProbe.m, 1.20
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.94
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_DeleteFcn.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Init.m, 1.8
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.15
+PACKAGES/EasyNIRS/PlotProbe/drawPlotProbeHiddenMeas.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/drawPlotProbeTimeMarkers.m, 1.6
+PACKAGES/EasyNIRS/PlotProbe/editPlotProbeAxScl_Callback.m, 1.7
+PACKAGES/EasyNIRS/PlotProbe/plotProbeAndSetProperties.m, 1.5
+PACKAGES/EasyNIRS/PlotProbe/radiobuttonShowHiddenMeas_Callback.m, 1.7
+PACKAGES/EasyNIRS/PlotProbe/radiobuttonShowTimeMarkers_Callback.m, 1.6
+PACKAGES/EasyNIRS/PlotProbe/showHiddenObjs.m, 1.5
+
+Files Added: 1
+PACKAGES/EasyNIRS/PlotProbe/editPlotProbeTimeMarkersAmp_Callback.m
+
+Files Deleted: 3
+PACKAGES/EasyNIRS/PlotProbe/calcAvgAmp.m
+PACKAGES/EasyNIRS/PlotProbe/radiobuttonShowAmplitude_Callback.m
+PACKAGES/EasyNIRS/PlotProbe/showAmplitude.m
+
+
+======================
+v1.0.15
+
+Commit Note: "Fixed another problem with shutting down plotProbe window 
+when loading new data set or exiting Homer2_UI."
+Date: April 26, 2012
+Files Changed:  3
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_DeleteFcn.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Init.m, 1.7
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Session.m, 1.3
+
+======================
+v1.0.16
+
+Commit Note: "Fixed time markers amplitude not working for OD. Also try/catch 
+in plotProbe wasn't exiting gracefully when error occurred before for loop."
+Date: May 1, 2012
+Files Changed:  4
+plotProbe.m, 1.21
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.16
+PACKAGES/EasyNIRS/PlotProbe/drawPlotProbeTimeMarkers.m, 1.7
+PACKAGES/EasyNIRS/PlotProbe/editPlotProbeTimeMarkersAmp_Callback.m, 1.2
+
+======================
+v1.1
+
+Commit Note: "Added function name descriptors for processing stream 
+functions. Also fixed a bug typo in parseFuncHelp.m"
+Date: May 4, 2012
+Files Changed: 25
+hmrBandpassFilt.m, 1.3
+hmrBlockAvg.m, 1.13
+hmrDeconvTB_3rd.m, 1.8
+hmrDeconvTB_SS3rd.m, 1.6
+hmrDeconvTB_SS3rd_Highest.m, 1.3
+hmrFindHrfOutlier.m, 1.3
+hmrIntensity2Conc.m, 1.5
+hmrIntensity2OD.m, 1.4
+hmrIntensityNormalized.m, 1.3
+hmrKalman.m, 1.2
+hmrKalmanOscPhys.m, 1.4
+hmrMotionArtifact.m, 1.10
+hmrMotionCorrectPCA.m, 1.5
+hmrMotionCorrectPCArecurse.m, 1.2
+hmrOD2Conc.m, 1.3
+hmrRegressors.m, 1.3
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.95
+PACKAGES/EasyNIRS/Processing/enAdaptiveFilteringSS.m, 1.2
+PACKAGES/EasyNIRS/Processing/enCrossCorrelation.m, 1.3
+PACKAGES/EasyNIRS/Processing/enPCAFilter.m, 1.6
+PACKAGES/EasyNIRS/Processing/enPruneChannels.m, 1.11
+PACKAGES/EasyNIRS/Processing/enStimIncData_varargin.m, 1.5
+PACKAGES/EasyNIRS/Processing/enStimRejection.m, 1.7
+PACKAGES/EasyNIRS/Processing/parseFuncHelp.m, 1.5
+PACKAGES/EasyNIRS/Processing/procStreamRegHelp.m, 1.6
+
+
+======================
+v1.1 (rtag v1_1)
+
+Commit Note: "EasyNIRS interface renamed to Homer2_UI. For the online release
+(v1.1) this gives user ability to use the official HOMER2 GUI entry function 
+name while keeping the old name EasyNIRS (for now)."
+Date: May 6, 2012
+Files Added: 1
+Homer2_UI.m
+
+======================
+v1.1.1 (rtag v1_1_1)
+
+Commit Note: "Implement systematic error checking for .nirs data set. 
+This involves having a more formal definition of what the .nirs format 
+is. If there are files with fatal errors then they are displayed in a 
+second listbox. Only valid .nirs files are loaded as part a the data 
+set. Also Created separate directory LoadSaveData and moved files related 
+to loading .nirs, groupResults.mat and saving to .nirs and 
+groupResults.mat."
+Date: May 8, 2012
+Files Changed: 6
+PACKAGES/EasyNIRS/EasyNIRS.fig, 1.31
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.96
+PACKAGES/EasyNIRS/EasyNIRS_stimCondInit.m, 1.3
+PACKAGES/EasyNIRS/EasyNIRS_stimDataUpdate.m, 1.11
+PACKAGES/EasyNIRS/Processing/EasyNIRS_Process.m, 1.21
+PACKAGES/EasyNIRS/Processing/EasyNIRS_ProcessOpt.m, 1.22
+
+Files Renamed: 8 
+PACKAGES/EasyNIRS/loadDataFromRun.m to
+  PACKAGES/EasyNIRS/LoadSaveData/loadDataFromRun.m
+PACKAGES/EasyNIRS/loadGroup.m to 
+  PACKAGES/EasyNIRS/LoadSaveData/loadGroup.m
+PACKAGES/EasyNIRS/loadRun.m to 
+  PACKAGES/EasyNIRS/LoadSaveData/loadRun.m
+PACKAGES/EasyNIRS/saveDataToRun.m to 
+  PACKAGES/EasyNIRS/LoadSaveData/SaveDataToRun.m
+PACKAGES/EasyNIRS/loadNIRS2hmr.m to 
+  PACKAGES/EasyNIRS/LoadSaveData/LoadNIRS2hmr.m
+PACKAGES/EasyNIRS/loadCurrNIRSFile.m to 
+  PACKAGES/EasyNIRS/LoadSaveData/LoadCurrNIRSFile.m
+PACKAGES/EasyNIRS/saveRunSelect.m to 
+  PACKAGES/EasyNIRS/LoadSaveData/SaveRunSelect.m
+PACKAGES/EasyNIRS/EasyNIRS_checkNIRSacrossFiles.m to 
+  PACKAGES/EasyNIRS/LoadSaveData/checkNIRSFormat.m
+
+Files Added: 2
+PACKAGES/EasyNIRS/LoadSaveData/getNIRSFileErrors.m
+PACKAGES/EasyNIRS/LoadSaveData/GetNIRSDataSet.m
+
+
+
+======================
+v1.1.2 
+
+Commit Note: "Last change introduced more systematic error checking 
+of .nirs file format and discarding files which have fatal errors. 
+Since the number of .nirs files loaded in the Homer2_UI session may 
+not necessarily equal the number of .nirs in the group directory, 
+functions can't rely on loading from group directory independently. 
+Now files are loaded in a central place and its passed as an argument
+to other functions. Didn't modify function call to EasyNIRS_stimCondInit 
+to do this."
+Date: May 17, 2012
+Files Changed: 1
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.97
+
+
+======================
+v1.1.3
+
+Commit Note: "EasyNIRS.fig had reference to KeyPress function (listboxFilesErr_KeyPress)
+which was never defined. Got rid of the reference."
+Date: May 17, 2012
+Files Changed: 1
+PACKAGES/EasyNIRS/EasyNIRS.fig, 1.32
+ 
+
+======================
+v1.1.4
+
+Commit Note: "a) Added export feature of avg responce to text or matlab file. b) Also 
+added copying of SD structure to subject and group procInput in group tree and new error
+messages - one for obsolete format and one for pure error. c) Removed some redundant 
+files that were left over when moving load/save functions to the new LoadSaveData 
+directory."
+Date: June 23, 2012
+Files Changed: 8
+PACKAGES/EasyNIRS/EasyNIRS.fig, 1.33
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.98
+PACKAGES/EasyNIRS/initProcInputStruct.m, 1.5
+PACKAGES/EasyNIRS/LoadSaveData/GetNIRSDataSet.m, 1.2
+PACKAGES/EasyNIRS/LoadSaveData/LoadCurrNIRSFile.m, 1.2
+PACKAGES/EasyNIRS/LoadSaveData/checkNIRSFormat.m, 1.1
+PACKAGES/EasyNIRS/LoadSaveData/getNIRSFileErrors.m, 1.2
+PACKAGES/EasyNIRS/LoadSaveData/loadGroup.m, 1.2
+
+Files Renamed: 1
+PACKAGES/EasyNIRS/EasyNIRS_MeanResponce.m  -->
+   PACKAGES/EasyNIRS/Export/ExportHRFMean.m
+
+Files Added: 2
+PACKAGES/EasyNIRS/Export/ExportHRF.m
+PACKAGES/EasyNIRS/LoadSaveData/initErrFlagsStruct.m
+
+Files Deleted: 3
+PACKAGES/EasyNIRS/loadGroup.m
+PACKAGES/EasyNIRS/loadRun.m
+PACKAGES/EasyNIRS/loadDataFromRun.m
+
+
+======================
+v1.1.5
+
+Commit Note: "Setting stims using aux signal in stimGUI doesn't work when there's a stim of the same 
+condition which already exists. Also did minor clean up of loading functions. And got rid 
+of ml variable when doing .nirs file menu reset. "
+Date: July 2, 2012
+Files Changed: 8
+PACKAGES\EasyNIRS\EasyNIRS.m, 1.99
+PACKAGES\EasyNIRS\LoadSaveData\LoadCurrNIRSFile.m, 1.3
+PACKAGES\EasyNIRS\LoadSaveData\loadDataFromRun.m, 1.2
+PACKAGES\EasyNIRS\LoadSaveData\loadRun.m, 1.2
+PACKAGES\stimGUI\stimGUI.fig, 1.13
+PACKAGES\stimGUI\stimGUI.m, 1.20
+PACKAGES\stimGUI\stimGUI_Active.m, 1.2
+PACKAGES\stimGUI\stimGUI_AddEditDelete.m, 1.7
+
+
+=======================
+v1.2
+
+Commit Note: "First version of AtlasViewerGUI and the new supporting SDgui 
+features: Spring and Anchor axes and tables."
+Date: July 11, 2012
+Files Changed: 21
+PACKAGES/EasyNIRS/EasyNIRS
+PACKAGES/SDgui/SDgui.fig
+PACKAGES/SDgui/SDgui
+PACKAGES/SDgui/lambda/wavelength_edit_Callback
+PACKAGES/SDgui/optode_tbls/optode_det_tbl_CellEditCallback
+PACKAGES/SDgui/optode_tbls/optode_det_tbl_get_tbl_data
+PACKAGES/SDgui/optode_tbls/optode_src_tbl_CellEditCallback
+PACKAGES/SDgui/optode_tbls/optode_src_tbl_get_tbl_data
+PACKAGES/SDgui/probe_geometry_axes/probe_geometry_axes_ButtonDownFcn
+PACKAGES/SDgui/probe_geometry_axes/probe_geometry_axes_CreateFcn
+PACKAGES/SDgui/probe_geometry_axes/probe_geometry_axes_DetUpdate
+PACKAGES/SDgui/probe_geometry_axes/probe_geometry_axes_Init
+PACKAGES/SDgui/probe_geometry_axes/probe_geometry_axes_SrcUpdate
+PACKAGES/SDgui/sd_data/sd_data_Clear
+PACKAGES/SDgui/sd_data/sd_data_Create
+PACKAGES/SDgui/sd_data/sd_data_ErrorFix
+PACKAGES/SDgui/sd_data/sd_data_Get
+PACKAGES/SDgui/sd_data/sd_data_Init
+PACKAGES/SDgui/sd_data/sd_data_SetLambda
+PACKAGES/SDgui/sd_file/sd_file_open
+PACKAGES/SDgui/sd_file/sd_file_save
+
+Files Removed: 1
+HOMER2.doc 
+
+
+Files Added: 96
+PACKAGES/AtlasViewerGUI/AtlasViewerGUI.fig
+PACKAGES/AtlasViewerGUI/AtlasViewerGUI.m 
+PACKAGES/AtlasViewerGUI/AtlasViewerGUI_version.m 
+PACKAGES/AtlasViewerGUI/SetProbeDisplay.m 
+PACKAGES/AtlasViewerGUI/getRegSpringError.m 
+PACKAGES/AtlasViewerGUI/ForwardModel/displayIntensityOnMesh.m 
+PACKAGES/AtlasViewerGUI/ForwardModel/genForwardMatrix_new.m 
+PACKAGES/AtlasViewerGUI/ForwardModel/gen_tMCimg_inp.m 
+PACKAGES/AtlasViewerGUI/ForwardModel/gen_tMCimg_inp_wrapper.m 
+PACKAGES/AtlasViewerGUI/ForwardModel/get_tiss_prop.m 
+PACKAGES/AtlasViewerGUI/ForwardModel/load_tMCimg_2pt.m 
+PACKAGES/AtlasViewerGUI/ForwardModel/projVoltoMesh.m 
+PACKAGES/AtlasViewerGUI/LoadSaveSurfsPts/fread3.m 
+PACKAGES/AtlasViewerGUI/LoadSaveSurfsPts/fwrite3.m 
+PACKAGES/AtlasViewerGUI/LoadSaveSurfsPts/loadFSSurface.m 
+PACKAGES/AtlasViewerGUI/LoadSaveSurfsPts/load_bin.m 
+PACKAGES/AtlasViewerGUI/LoadSaveSurfsPts/load_fs_pial.m 
+PACKAGES/AtlasViewerGUI/LoadSaveSurfsPts/map_mesh_idx.m 
+PACKAGES/AtlasViewerGUI/LoadSaveSurfsPts/read_surf.m 
+PACKAGES/AtlasViewerGUI/LoadSaveSurfsPts/viewPts.m 
+PACKAGES/AtlasViewerGUI/LoadSaveSurfsPts/viewPtsOnSurf.m 
+PACKAGES/AtlasViewerGUI/LoadSaveSurfsPts/viewsurf.m 
+PACKAGES/AtlasViewerGUI/LoadSaveSurfsPts/write_surf.m 
+PACKAGES/AtlasViewerGUI/Registration/SDguiSpring2posProbe.m 
+PACKAGES/AtlasViewerGUI/Registration/gen_positionprobe_dat.m 
+PACKAGES/AtlasViewerGUI/Registration/gen_xform_from_pts.m 
+PACKAGES/AtlasViewerGUI/Registration/optconn_auto_gen.m 
+PACKAGES/AtlasViewerGUI/Registration/positionprobe.m 
+PACKAGES/AtlasViewerGUI/Registration/positionprobe_apply.m 
+PACKAGES/AtlasViewerGUI/Registration/registerProbe2Head.m 
+PACKAGES/AtlasViewerGUI/Registration/write_positionprobe_dat.m 
+PACKAGES/AtlasViewerGUI/Registration/xform_apply.m 
+PACKAGES/AtlasViewerGUI/Utils/find_region_centers.m 
+PACKAGES/AtlasViewerGUI/Utils/gen_bbox.m 
+PACKAGES/AtlasViewerGUI/Utils/uibutton.m 
+PACKAGES/SDgui/optode_tbls/optode_tbls_Hide.m 
+PACKAGES/SDgui/optode_tbls2/error_check_optode_dummy_tbl.m 
+PACKAGES/SDgui/optode_tbls2/error_check_optode_tbls2.m 
+PACKAGES/SDgui/optode_tbls2/optode_anchor_tbl_CellEditCallback.m 
+PACKAGES/SDgui/optode_tbls2/optode_anchor_tbl_CellSelectionCallback.m 
+PACKAGES/SDgui/optode_tbls2/optode_anchor_tbl_Clear.m 
+PACKAGES/SDgui/optode_tbls2/optode_anchor_tbl_CreateFcn.m 
+PACKAGES/SDgui/optode_tbls2/optode_anchor_tbl_ErrCheck.m 
+PACKAGES/SDgui/optode_tbls2/optode_anchor_tbl_GetSize.m 
+PACKAGES/SDgui/optode_tbls2/optode_anchor_tbl_Init.m 
+PACKAGES/SDgui/optode_tbls2/optode_anchor_tbl_Update.m 
+PACKAGES/SDgui/optode_tbls2/optode_anchor_tbl_get_tbl_data.m 
+PACKAGES/SDgui/optode_tbls2/optode_dummy_tbl_CellEditCallback.m 
+PACKAGES/SDgui/optode_tbls2/optode_dummy_tbl_CellSelectionCallback.m 
+PACKAGES/SDgui/optode_tbls2/optode_dummy_tbl_Clear.m 
+PACKAGES/SDgui/optode_tbls2/optode_dummy_tbl_CreateFcn.m 
+PACKAGES/SDgui/optode_tbls2/optode_dummy_tbl_GetSize.m 
+PACKAGES/SDgui/optode_tbls2/optode_dummy_tbl_Init.m 
+PACKAGES/SDgui/optode_tbls2/optode_dummy_tbl_Update.m 
+PACKAGES/SDgui/optode_tbls2/optode_dummy_tbl_UpdateNum.m 
+PACKAGES/SDgui/optode_tbls2/optode_spring_tbl_CellEditCallback.m 
+PACKAGES/SDgui/optode_tbls2/optode_spring_tbl_CellSelectionCallback.m 
+PACKAGES/SDgui/optode_tbls2/optode_spring_tbl_Clear.m 
+PACKAGES/SDgui/optode_tbls2/optode_spring_tbl_CreateFcn.m 
+PACKAGES/SDgui/optode_tbls2/optode_spring_tbl_GetSize.m 
+PACKAGES/SDgui/optode_tbls2/optode_spring_tbl_Init.m 
+PACKAGES/SDgui/optode_tbls2/optode_spring_tbl_Update.m 
+PACKAGES/SDgui/optode_tbls2/optode_spring_tbl_get_tbl_data.m 
+PACKAGES/SDgui/optode_tbls2/optode_tbls2_Hide.m 
+PACKAGES/SDgui/SDgui_version.m 
+PACKAGES/SDgui/optode_tbls/error_check_optode_tbls.m 
+PACKAGES/SDgui/probe_geometry_axes/probe_geometry_axes_DummyUpdate.m 
+PACKAGES/SDgui/probe_geometry_axes/probe_geometry_axes_Hide.m 
+PACKAGES/SDgui/probe_geometry_axes/probe_geometry_axes_SetAxisEqual.m 
+PACKAGES/SDgui/probe_geometry_axes2/getSpringListFromAxes.m 
+PACKAGES/SDgui/probe_geometry_axes2/probe_geometry_axes2_ButtonDownFcn.m 
+PACKAGES/SDgui/probe_geometry_axes2/probe_geometry_axes2_Clear.m 
+PACKAGES/SDgui/probe_geometry_axes2/probe_geometry_axes2_CreateFcn.m 
+PACKAGES/SDgui/probe_geometry_axes2/probe_geometry_axes2_GetUserData.m 
+PACKAGES/SDgui/probe_geometry_axes2/probe_geometry_axes2_Hide.m 
+PACKAGES/SDgui/probe_geometry_axes2/probe_geometry_axes2_Init.m 
+PACKAGES/SDgui/probe_geometry_axes2/probe_geometry_axes2_OptUpdate.m 
+PACKAGES/SDgui/probe_geometry_axes2/probe_geometry_axes2_SetAxisEqual.m 
+PACKAGES/SDgui/probe_geometry_axes2/probe_geometry_axes2_edges_ButtonDownFcn.m 
+PACKAGES/SDgui/probe_geometry_axes2/set_view_probe_geometry_axes2.m 
+PACKAGES/SDgui/sd_data/sd_data_AddDummyPos.m 
+PACKAGES/SDgui/sd_data/sd_data_AddEditDummy.m 
+PACKAGES/SDgui/sd_data/sd_data_AddEditSpring.m 
+PACKAGES/SDgui/sd_data/sd_data_DeleteDummyPos.m 
+PACKAGES/SDgui/sd_data/sd_data_DeleteSpring.m 
+PACKAGES/SDgui/sd_data/sd_data_GetAnchorList.m 
+PACKAGES/SDgui/sd_data/sd_data_GetSpringList.m 
+PACKAGES/SDgui/sd_data/sd_data_SetAnchorList.m 
+PACKAGES/SDgui/sd_data/sd_data_SetDummyPos.m 
+PACKAGES/SDgui/sd_data/sd_data_SetSpringList.m 
+PACKAGES/SDgui/sd_data/sd_data_UpdateSpringList.m 
+PACKAGES/SDgui/utils/pts_on_line.m 
+PACKAGES/SDgui/utils/pts_on_line2.m 
+PACKAGES/SDgui/sort_sl.m
+PACKAGES/SDgui/get_pt_from_buttondown.m
+PACKAGES/SDgui/optode_tbls/error_check.m
+
+
+
+Files Renamed: 12
+PACKAGES/SDgui/probe_geometry_axes/redraw_text.m
+    PACKAGES/SDgui/utils/redraw_text.m
+PACKAGES/SDgui/probe_geometry_axes/redraw_text_many.m
+    PACKAGES/SDgui/utils/redraw_text_many.m
+PACKAGES/SDgui/probe_geometry_axes/resize_axes.m
+    PACKAGES/SDgui/utils/resize_axes.m
+PACKAGES/SDgui/probe_geometry_axes/set_view.m
+    PACKAGES/SDgui/probe_geometry_axes/set_view_probe_geometry_axes.m
+PACKAGES/Utils/saveData2nirsfile.m
+    PACKAGES/EasyNIRS/LoadSaveData/saveData2nirsfile.m
+    PACKAGES/SDgui/sd_file/sd_file_save2nirs.m
+PACKAGES/SDgui/dist3.m
+    PACKAGES/SDgui/utils/dist3.m
+PACKAGES/SDgui/nearest_point.m
+    PACKAGES/SDgui/utils/nearest_point.m
+PACKAGES/SDgui/probe_geometry_axes/getDetPosFromAxes.m
+    PACKAGES/SDgui/getOptPosFromAxes.m
+PACKAGES/SDgui/probe_geometry_axes/getSrcPosFromAxes.m
+    PACKAGES/SDgui/getOptPosFromAxes.m
+PACKAGES/SDgui/distmatrix.m
+    PACKAGES/SDgui/utils/distmatrix.m
+PACKAGES/SDgui/sd_data/sd_data_GetMeasList.m
+    PACKAGES/SDgui/sd_data/sd_data_GetMl.m
+PACKAGES/SDgui/probe_geometry_axes/set_threshold.m
+    PACKAGES/SDgui/set_threshold.m
+
+
+=======================
+v1.2.1
+
+Commit Note: "Fixed several bugs in SDgui related to wavelength edit box, 
+spring edges in probe_geometry_axes2, and the load SD file button not 
+working properly."
+Date: July 11, 2012
+Files Changed: 5
+PACKAGES/SDgui/SDgui.fig, 1.18
+PACKAGES/SDgui/probe_geometry_axes2/probe_geometry_axes2_ButtonDownFcn.m, 1.2
+PACKAGES/SDgui/probe_geometry_axes2/probe_geometry_axes2_Init.m, 1.2
+PACKAGES/SDgui/probe_geometry_axes2/probe_geometry_axes2_OptUpdate.m, 1.2 
+PACKAGES/SDgui/sd_file/sd_file_load.m, 1.6
+
+
+
+=======================
+v1.2.2
+
+Commit Note: "a) Added Zoom in/out to AtlasViewerGUI. b) Fixed a corruption of AtlasViewerGUI.fig which prevents it from loading in Windows. c) Switched horizontal left and right button positions in AtlasViewerGUI. d) Changed units for SDgui and AtlasViewerGUI from normalized to absolute units (cm) to prevent disproportionately large and dispropotionate aspect ratio with non-standard monitor screens."
+Date: July 13, 2012
+Files Changed: 5
+PACKAGES/AtlasViewerGUI\AtlasViewerGUI.fig, 1.2
+PACKAGES/AtlasViewerGUI\AtlasViewerGUI.m, 1.2
+PACKAGES/AtlasViewerGUI\AtlasViewerGUI_version.m, 1.2
+PACKAGES/EasyNIRS\EasyNIRS_version.m, 1.40
+PACKAGES/SDgui\SDgui.fig, 1.18
+PACKAGES/SDgui\SDgui_version.m, 1.2
+
+=======================
+v1.2.3
+
+Commit Note: "a) Another attempt at fixing corruption prolem in AtlasViewerGUI.fig. Still didn't work last time."
+Date: July 13, 2012
+Files Changed: 4
+PACKAGES/AtlasViewerGUI\AtlasViewerGUI.fig, 1.3
+PACKAGES/AtlasViewerGUI\AtlasViewerGUI.m, 1.3
+PACKAGES/AtlasViewerGUI\AtlasViewerGUI_version.m, 1.3
+PACKAGES/EasyNIRS\EasyNIRS_version.m, 1.41
+
+=======================
+v1.2.4
+
+Commit Note: "Integrated Tsuzuki Daisuke's code to bring digitized points into 
+atlas space, then to pull the points to the surface of the head. Still need to add
+more generic mothod to push or pull tranformed digitized points to the head surface.
+Also added ability to allow user to save AtlasViewerGUI registered probe output to 
+a text file. Lastly did some clean up of the AtlasViewerGUI."
+Date: July 23, 2012
+Files Changed: 5
+PACKAGES\AtlasViewerGUI\AtlasViewerGUI.fig
+PACKAGES\AtlasViewerGUI\AtlasViewerGUI.m
+PACKAGES\AtlasViewerGUI\AtlasViewerGUI_version.m
+PACKAGES\AtlasViewerGUI\LoadSaveSurfsPts\viewsurf.m
+PACKAGES\EasyNIRS\EasyNIRS_version.m
+
+Files Added: 3
+PACKAGES\AtlasViewerGUI\Registration\probeDigPoints\pullPtsToSurf.m
+PACKAGES\AtlasViewerGUI\Registration\probeDigPoints\reg_subj2atlas.m
+PACKAGES\SDgui\utils\pts_on_line3.m
+
+Files Renamed: 10 
+PACKAGES\AtlasViewerGUI\Registration\probeSprings\SDguiSpring2posProbe.m
+    PACKAGES\AtlasViewerGUI\Registration\SDguiSpring2posProbe.m
+PACKAGES\AtlasViewerGUI\Registration\probeSprings\gen_positionprobe_dat.m
+    PACKAGES\AtlasViewerGUI\Registration\gen_positionprobe_dat.m
+PACKAGES\AtlasViewerGUI\Registration\probeSprings\gen_xform_from_pts.m
+    PACKAGES\AtlasViewerGUI\Registration\gen_xform_from_pts.m
+PACKAGES\AtlasViewerGUI\Registration\probeSprings\getRegSpringError.m
+    PACKAGES\AtlasViewerGUI\getRegSpringError.m
+PACKAGES\AtlasViewerGUI\Registration\probeSprings\optconn_auto_gen.m
+    PACKAGES\AtlasViewerGUI\Registration\optconn_auto_gen.m
+PACKAGES\AtlasViewerGUI\Registration\probeSprings\positionprobe.m
+    PACKAGES\AtlasViewerGUI\Registration\positionprobe.m
+PACKAGES\AtlasViewerGUI\Registration\probeSprings\positionprobe_apply.m
+    PACKAGES\AtlasViewerGUI\Registration\positionprobe_apply.m
+PACKAGES\AtlasViewerGUI\Registration\probeSprings\registerProbe2Head.m
+    PACKAGES\AtlasViewerGUI\Registration\registerProbe2Head.m
+PACKAGES\AtlasViewerGUI\Registration\probeSprings\write_positionprobe_dat.m
+    PACKAGES\AtlasViewerGUI\Registration\write_positionprobe_dat.m
+PACKAGES\AtlasViewerGUI\Utils\xform_apply.m
+    PACKAGES\AtlasViewerGUI\Registration\xform_apply.m
+
+Files Deleted: 1
+PACKAGES\AtlasViewerGUI\SetProbeDisplay.m
+
+
+=============================
+v1.2.5
+
+Commit Note: "Cleaned up nirs format error checking code. Also deleted to unused variables 
+from EasyNIRS_AxesSDG_buttondown.m. And finally added ';' to function in EasyNIRS.m."
+Date: Aug 1, 2012
+Files Changed: 5
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.103
+PACKAGES/EasyNIRS/EasyNIRS_AxesSDG_buttondown.m, 1.5
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.43
+PACKAGES/EasyNIRS/LoadSaveData/checkNIRSFormat.m, 1.3
+PACKAGES/EasyNIRS/LoadSaveData/getNIRSFileErrors.m, 1.3
+
+
+=============================
+v1.2.6
+
+Commit Note: "Changed plotProbe figure size units from normalized to pixels. 
+Cleaned up some code in plotProbe.m. Changed units on new objects in 
+EasyNIRS.fig (waterfall and group popup menu) so that they show up the same 
+across platforms."
+Date: Aug 9, 2012
+Files Changed: 5
+PACKAGES\EasyNIRS\EasyNIRS.fig, 1.37
+PACKAGES\EasyNIRS\EasyNIRS.m, 1.106
+PACKAGES\EasyNIRS\EasyNIRS_version.m, 1.43
+PACKAGES\EasyNIRS\PlotProbe\PlotProbe_Init.m, 1.9
+plotProbe.m, 1.21
+
+
+
+=============================
+v1.2.7
+
+Commit Note: "Added features, restructuring and cleanup to AtlasViewer. Features include
+integration of Canonical probe registration, Anchor-based probabalistic probe registration, 
+and displaying Anatomical Labels on the brain, probe projection onto labeled brain and 
+displaying table of the anatomical labels each probe covers. Also includes changes to make 
+AtlasViewerGUI and SDgui be able to communicate and still fully be viable standalone tools."
+Date: Aug 9, 2012
+Files Changed: 12
+PACKAGES\AtlasViewerGUI\AtlasViewerGUI.fig
+PACKAGES\AtlasViewerGUI\AtlasViewerGUI.m
+PACKAGES\AtlasViewerGUI\ForwardModel\displayIntensityOnMesh.m
+PACKAGES\AtlasViewerGUI\LoadSaveSurfsPts\viewPts.m
+PACKAGES\AtlasViewerGUI\LoadSaveSurfsPts\viewPtsOnSurf.m
+PACKAGES\AtlasViewerGUI\Registration\probeDigPoints\pullPtsToSurf.m
+PACKAGES\AtlasViewerGUI\Registration\probeDigPoints\reg_subj2atlas.m
+PACKAGES\AtlasViewerGUI\Registration\probeSprings\getRegSpringError.m
+PACKAGES\AtlasViewerGUI\Registration\probeSprings\registerProbe2Head.m
+PACKAGES\EasyNIRS\EasyNIRS_version.m
+PACKAGES\SDgui\SDgui.m
+PACKAGES\SDgui\sd_data\sd_data_Get.m
+
+Files Added: 13
+PACKAGES\AtlasViewerGUI\AAL\DistBtw.m
+PACKAGES\AtlasViewerGUI\AAL\ProjectionBI.m
+PACKAGES\AtlasViewerGUI\AtlasViewerGUI_SDgui.m
+PACKAGES\AtlasViewerGUI\LoadSaveSurfsPts\viewsurf2.m
+PACKAGES\AtlasViewerGUI\Registration\probeDigPoints\C2S.m
+PACKAGES\AtlasViewerGUI\Registration\probeDigPoints\ar_AlignPoints.m
+PACKAGES\AtlasViewerGUI\Registration\probeDigPoints\getProbeRegMethod.m
+PACKAGES\AtlasViewerGUI\Utils\displayIntensityOnMesh.m
+PACKAGES\AtlasViewerGUI\Utils\dist3.m
+PACKAGES\AtlasViewerGUI\Utils\nearest_point.m
+PACKAGES\AtlasViewerGUI\Utils\pts_on_line5.m
+PACKAGES\AtlasViewerGUI\Utils\raytrace.m
+PACKAGES\SDgui\SDgui_AtlasViewerGUI.m
+
+Files Deleted: 2
+PACKAGES\SDgui\utils\pts_on_line.m
+PACKAGES\SDgui\utils\pts_on_line3.m
+
+
+=============================
+v1.2.8
+
+Commit Note: "
+Fixed size bug in plot probe. 
+
+Changed units in EasyNIRS gui from normalized to pixels. 
+
+plotPtobe now remembers last size and position after being 
+closed. Next time it's opened it reuses that size and position.
+"
+Date: Aug 10, 2012
+Files Changed: 5
+plotProbe.m, 1.24
+PACKAGES/EasyNIRS/EasyNIRS.fig, 1.39
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.46
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Init.m, 1.11
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Session.m, 1.6
+
+
+
+=============================
+v1.3
+
+Commit Note: "
+-- Fixed when Homer2_UI gui opens the current directory isn't displayed properly.
+-- Disable newly added graphics objects when data isn't loaded.
+-- Adjusted the Zoom panel sizes in the Homer2_UI gui.
+"
+Date: Aug 13, 2012
+Files Changed: 4
+PACKAGES\EasyNIRS\EasyNIRS.fig
+PACKAGES\EasyNIRS\EasyNIRS.m
+PACKAGES\EasyNIRS\EasyNIRS_version.m
+PACKAGES\EasyNIRS\LoadSaveData\GetNIRSDataSet.m
+
+
+=============================
+v1.3.1
+
+Commit Note: "
+-- Added feature to load .nirs data set from subject sub-directories. 
+-- Improved error checking of .nirs files and .nirs format across 
+   files. 
+"
+Date: Sept 04, 2012
+Files Changed: 16
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.109
+PACKAGES/EasyNIRS/EasyNIRS_AxesSDG_buttondown.m, 1.7
+PACKAGES/EasyNIRS/EasyNIRS_CheckPlotButtons.m, 1.16
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.44
+PACKAGES/EasyNIRS/EasyNIRS_plotAxesSDG.m, 1.11
+PACKAGES/EasyNIRS/EasyNIRS_sdgToggleLines.m, 1.7
+PACKAGES/EasyNIRS/EasyNIRS_stimCondInit.m, 1.4
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.49
+PACKAGES/EasyNIRS/listboxFiles_getCurrSelection.m, 1.3
+PACKAGES/EasyNIRS/LoadSaveData/GetNIRSDataSet.m, 1.4
+PACKAGES/EasyNIRS/LoadSaveData/checkNIRSFormat.m, 1.4
+PACKAGES/EasyNIRS/LoadSaveData/getNIRSFileErrors.m, 1.4
+PACKAGES/EasyNIRS/LoadSaveData/initErrFlagsStruct.m, 1.2
+PACKAGES/EasyNIRS/LoadSaveData/loadGroup.m, 1.3
+PACKAGES/Utils/comp_struct.m, 1.4
+PACKAGES/Utils/data_diff.m, 1.6
+
+Files Added: 5
+PACKAGES/EasyNIRS/LoadSaveData/checkNIRSFormatAcrossFiles.m, 
+PACKAGES/EasyNIRS/LoadSaveData/findNIRSDataSet.m, 
+PACKAGES/EasyNIRS/LoadSaveData/fixOrUpgradeNIRS.m, 
+PACKAGES/EasyNIRS/LoadSaveData/getSubjNameAndRun.m, 
+PACKAGES/EasyNIRS/LoadSaveData/mydir.m, 
+
+
+========================================
+v1.3.1
+
+Commit Note: "
+Removed some unnecessary warnings. Added clearer message to .nirs format error 
+checking. Fixed the error counting that appears in the text message in Homer2_UI.
+"
+Date: Sept 04, 2012
+Files Changed: 5
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.50
+PACKAGES/EasyNIRS/copyStructFieldByField.m, 1.4
+PACKAGES/EasyNIRS/LoadSaveData/GetNIRSDataSet.m, 1.5
+PACKAGES/EasyNIRS/LoadSaveData/checkNIRSFormat.m, 1.5
+PACKAGES/EasyNIRS/LoadSaveData/checkNIRSFormatAcrossFiles.m, 1.2
+
+=======================================
+v1.3.6
+
+Commit Note: "
+"
+-- Removed function isnumber from PACKAGE/Utils.
+"
+Date: Nov 27, 2012
+Files Changed: 3
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.53
+PACKAGES/EasyNIRS/LoadSaveData/getSubjNameAndRun.m, 1.2
+PACKAGES/EasyNIRS/LoadSaveData/loadGroup.m, 1.4
+
+
+=======================================
+v1.3.7
+
+Commit Note: "
+"
+Added ability to detect and fix non integer values in the stim s matrix. 
+"
+Date: Nov 29, 2012
+Files Changed: 3
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.54
+PACKAGES/EasyNIRS/checkNIRSFormat.m, 1.7
+PACKAGES/EasyNIRS/fixOrUpgradeNIRS.m, 1.3
+
+=======================================
+v1.3.8
+
+Commit Note: 
+"
+Fixed confusing rule for adding new stim with new label.
+(task created, Dec 20, 2012)
+"
+Date: jan 7, 2013
+Files Changed: 2
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.54
+PACKAGES/stimGUI/condAssignLabel.m, 1.2
+
+
+========================================
+v1.3.8
+
+Commit Note: 
+"
+Y axis too small, can't read 10^5. Make it a larger font size. 
+NOTE that it appears differently on linux and windows. Chose 
+the optimal font size that works for both. 
+"
+Date: Jan 21, 2013
+Files Changed: 2
+PACKAGES/EasyNIRS/EasyNIRS.fig, 1.41
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.55
+
+===========================================
+v1.4
+
+Commit Note: 
+"
+-- When adding new stims and naming them, have all the labels available.
+(task created, Jan 8, 2012)
+
+-- Think of a color scheme for stims so that when adding 
+new conditions the colors for the existing stims don't change. 
+(task created, June 28, 2012)
+
+NOTES: Added group conditions to hmr.group. No deletions of conditions 
+at the run or group levels for simplicity. Only used conditions at the run
+level are marked as active in the conditions popup menu. 
+
+-- Added functionality to correctly show whether a run is contributing to 
+a subject or group avg. This is done in two places: in the main axes data 
+plot lines are thick if contributing and thin if not. Also in plotProbe, 
+data lines are red/green/blue if contributing and off color if not.
+
+-- Added functionality for detecting CondNames errors. Also instead of 
+having error flag structs which are boolean (eg SD, procInput, etc) in 
+the NIRS format error checking, now made every variable use the same 
+scheme (eg err(iF).SD_MeasList, err(iF).SD_SrcPos, err(iF).SD_DetPos, 
+etc).
+"
+Date: Feb 19, 2013
+Files Changed: 25
+PACKAGES/EasyNIRS/EasyNIRS.m, 1.110
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.45
+PACKAGES/EasyNIRS/EasyNIRS_stimCondInit.m, 1.5
+PACKAGES/EasyNIRS/EasyNIRS_stimDataUpdate.m, 1.12
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.57
+PACKAGES/EasyNIRS/popupmenuCondition_SetStrings.m, 1.2
+PACKAGES/EasyNIRS/LoadSaveData/GetNIRSDataSet.m, 1.6
+PACKAGES/EasyNIRS/LoadSaveData/LoadCurrNIRSFile.m, 1.5
+PACKAGES/EasyNIRS/LoadSaveData/checkNIRSFormat.m, 1.8
+PACKAGES/EasyNIRS/LoadSaveData/fixOrUpgradeNIRS.m, 1.4
+PACKAGES/EasyNIRS/LoadSaveData/getNIRSFileErrors.m, 1.7
+PACKAGES/EasyNIRS/LoadSaveData/initErrFlagsStruct.m, 1.3
+PACKAGES/EasyNIRS/LoadSaveData/loadGroup.m, 1.5
+PACKAGES/EasyNIRS/LoadSaveData/loadRun.m, 1.3
+PACKAGES/EasyNIRS/PlotProbe/PlotProbe_Session.m, 1.7
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.17
+PACKAGES/Utils/genStimMarks.m, 1.3
+PACKAGES/stimGUI/condSave.m, 1.5
+PACKAGES/stimGUI/highlightCondLines.m, 1.2
+PACKAGES/stimGUI/stimGUI.fig, 1.14
+PACKAGES/stimGUI/stimGUI.m, 1.21
+PACKAGES/stimGUI/stimGUI_AddEditDelete.m, 1.8
+PACKAGES/stimGUI/stimGUI_DisplayData.m, 1.14
+PACKAGES/stimGUI/stimGUI_DisplayData_StimCallback.m, 1.10
+PACKAGES/stimGUI/stimGUI_MakeConditions.m, 1.2
+
+Files Added: 4
+PACKAGES/EasyNIRS/isContributingHRF.m
+PACKAGES/stimGUI/stimCondGroupAdd.m
+PACKAGES/stimGUI/stimCondInit.m
+PACKAGES/stimGUI/stimCondInitTblEntry.m
+
+Files Removed: 9
+PACKAGES/EasyNIRS/checkConditions.m
+PACKAGES/stimGUI/condAddEdit.m
+PACKAGES/stimGUI/condAssignLabel.m
+PACKAGES/stimGUI/condDelete.m
+PACKAGES/stimGUI/condDeleteEmpty.m
+PACKAGES/stimGUI/condMakeNewTbl.m
+PACKAGES/stimGUI/condSort.m
+PACKAGES/stimGUI/stimGUI_GetConditions.m
+PACKAGES/stimGUI/stimGUI_GetFileCond.m
+
+
+===============================================
+v1.4.1
+
+Commit Note: 
+"
+Add tMCimg package to HOMER2. 
+(task created, Feb 14, 2013)
+"
+Date: Feb 20, 2013
+Files Added: 18
+PACKAGES/tMCimg/AUTHORS.txt
+PACKAGES/tMCimg/LICENSE.txt
+PACKAGES/tMCimg/install_linux_mac.sh
+PACKAGES/tMCimg/install_win.bat
+PACKAGES/tMCimg/makefile
+PACKAGES/tMCimg/makefile.linux_mac
+PACKAGES/tMCimg/makefile.win
+PACKAGES/tMCimg/src/makefile
+PACKAGES/tMCimg/src/makefile.Darwin
+PACKAGES/tMCimg/src/makefile.Linux
+PACKAGES/tMCimg/src/makefile.unix
+PACKAGES/tMCimg/src/makefile.win
+PACKAGES/tMCimg/src/tMCimg.c
+PACKAGES/tMCimg/src/tMCimg.sln
+PACKAGES/tMCimg/src/tMCimg.vcproj
+PACKAGES/tMCimg/src/tMCimg_bcb.bdsproj
+PACKAGES/tMCimg/src/tMCimg_bcb.bpf
+PACKAGES/tMCimg/src/tMCimg_bcb.res
+
+
+===============================================
+v1.4.2
+
+Commit Note: 
+"
+-- Fixed some bugs in code that determines whether a run is contributing to 
+subject and group averages in plotProbe and popupmenuConditions_SetString.
+
+-- Added error detection of corrupt .nirs files (that is, non-mat file) 
+when loading nirs data set.
+
+-- Fixed error in error detection regarding setting error count to 0 of the 
+subj dir of the current file using subjdiridx. If subjects don't have their 
+own directories subjdiridx is irrelevant and will equal zero. In that case 
+it shouldn't be used as an index.
+
+-- In EasyNIRS.fig set some units of buttons and text labels from 'pixels'
+to 'normalized'.
+"
+Date: Feb 20, 2013
+Files Changed: 7
+PACKAGES/EasyNIRS/EasyNIRS.fig, 1.42
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.59
+PACKAGES/EasyNIRS/LoadSaveData/checkNIRSFormat.m, 1.10
+PACKAGES/EasyNIRS/LoadSaveData/fixOrUpgradeNIRS.m, 1.6
+PACKAGES/EasyNIRS/LoadSaveData/getNIRSFileErrors.m, 1.9
+PACKAGES/EasyNIRS/LoadSaveData/initErrFlagsStruct.m, 1.4
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.18
+
+
+================================================
+v1.4.3
+
+Commit Note: 
+"
+-- Fixed matlab errors when adding stims and conditions after 
+calculating HRF and then browsing from file to file and condition 
+to condition plotting in main axes and plotProbe. Basically 
+added checks for these events.
+
+-- Fixed bug in stimGUI where the what_changed variable doesn't 
+accumulate events and therefore wasn't saving new CondNames to 
+files.
+
+-- Added error fixing when s matrix doesn't exist in .nirs file.
+"
+Date: Feb 21, 2013
+Files Changed: 7
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.46
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.60
+PACKAGES/EasyNIRS/isContributingHRF.m, 1.2
+PACKAGES/EasyNIRS/LoadSaveData/fixOrUpgradeNIRS.m, 1.7
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.19
+PACKAGES/stimGUI/stimGUI.m, 1.22
+PACKAGES/stimGUI/stimGUI_DisplayData_StimCallback.m, 1.11
+
+
+================================================
+v1.4.4
+
+Commit Note: 
+"
+Incorrect return value when condition # is 0 or greater than 
+number of condition in alreaedy calculated averages.
+"
+Date: Feb 21, 2013
+Files Changed: 3
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.47
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.61
+PACKAGES/EasyNIRS/isContributingHRF.m, 1.3
+
+
+================================================
+v1.4.5
+
+Commit Note: 
+"
+Check figure handle for plotprobe when trying to delete it because there
+is nothing to plot. 
+"
+Date: Feb 21, 2013
+Files Changed: 2
+PACKAGES/EasyNIRS/EasyNIRS_DisplayData.m, 1.48
+PACKAGES/EasyNIRS/PlotProbe/chooseDataAndPlot.m, 1.20
+
+
+=================================================
+v1.5.1
+
+Commit Note: 
+"
+Moved self contained code for determining and error checking 
+.nirs files data set at init time to it's own directory to make it 
+more object oriented.
+"
+Date: Jul 2, 2013
+Files Changed: 1
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.64
+
+
+Files Moved: 8
+PACKAGES/EasyNIRS/LoadSaveData/GetNIRSDataSet.m 
+  PACKAGES/EasyNIRS/NirsFiles/GetNIRSDataSet.m
+
+PACKAGES/EasyNIRS/LoadSaveData/checkNIRSFormat.m 
+  PACKAGES/EasyNIRS/NirsFiles/checkNIRSFormat.m
+
+PACKAGES/EasyNIRS/LoadSaveData/checkNIRSFormatAcrossFiles.m 
+  PACKAGES/EasyNIRS/NirsFiles/checkNIRSFormatAcrossFiles.m
+
+PACKAGES/EasyNIRS/LoadSaveData/findNIRSDataSet.m 
+  PACKAGES/EasyNIRS/NirsFiles/findNIRSDataSet.m
+
+PACKAGES/EasyNIRS/LoadSaveData/fixOrUpgradeNIRS.m 
+  PACKAGES/EasyNIRS/NirsFiles/fixOrUpgradeNIRS.m
+
+PACKAGES/EasyNIRS/LoadSaveData/getNIRSFileErrors.m 
+  PACKAGES/EasyNIRS/NirsFiles/getNIRSFileErrors.m
+
+PACKAGES/EasyNIRS/LoadSaveData/initErrFlagsStruct.m 
+  PACKAGES/EasyNIRS/NirsFiles/initErrFlagsStruct.m
+
+PACKAGES/EasyNIRS/LoadSaveData/mydir.m
+  PACKAGES/EasyNIRS/NirsFiles/mydir.m
+
+
+=================================================================
+v1.5.1
+
+Commit Note: 
+"
+Fixed error checker asking about spatial units for every file even 
+when you type "Yes for all". Also fixed SD.MeasList and SD.MeasListAct 
+error checking.
+"
+Date: Jul 2, 2013
+Files Changed: 3
+PACKAGES/EasyNIRS/EasyNIRS_version.m, 1.65
+EasyNIRS/NirsFiles/fixOrUpgradeNIRS.m, 1.2
+EasyNIRS/NirsFiles/getNIRSFileErrors.m, 1.2
+
+
+
